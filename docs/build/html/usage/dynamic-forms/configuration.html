@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configure your project to use dynamic forms &mdash; Django Form Builder 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Upload P7M and signed PDF files" href="../../features/signed-files.html" />
+    <link rel="prev" title="Create your DynamicFormClass and add static fields" href="customization.html" />
+    <link href="../../_static/custom.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="../../_static/favicon.ico">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+
+    
+    <a href="../../index.html" id="logo_main"><img src="../../_static/logo_unical.png" class="logo" alt="Logo" /></a>
+
+
+
+    <a id="title_under_logo" href="../../index.html"> Django Form Builder
+
+</a>
+
+
+    
+    
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/requirements-setup.html">Requirements and Setup</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Use single fields in your form</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../single-fields/description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../single-fields/methods.html">Methods ad Attributes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../single-fields/customization.html">Create your own fields</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build dynamic forms</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customization.html">Add static fields to a form</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Special features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../features/signed-files.html">Digitally signed attachments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features/formset.html">Formset javascript manager</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+    <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+    <a href="../../index.html">
+        <img src="../../_static/logo_unical.png" class="logo" alt="Logo"/>
+        </a>
+    <a href="../../index.html">
+        Django Form Builder
+    </a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Configure your project to use dynamic forms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/dynamic-forms/configuration.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configure-your-project-to-use-dynamic-forms">
+<h1>Configure your project to use dynamic forms<a class="headerlink" href="#configure-your-project-to-use-dynamic-forms" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first"><strong>Step 1</strong></p>
+<p>Every Dynamic Form needs a table to store the list of fields that compose it.</p>
+<p>Also, it has to be strictly linked to a project model entity to be rendered
+(e.g. what kind of object wil the form map? A Book, a Car or something else!?).</p>
+<p>In your project’s models, then, create a Model Class to store the list of fields,
+make it inherit class <code class="docutils literal notranslate"><span class="pre">DynamicFieldMap</span></code> and choose the ForeignKey that represents the
+form linked model entity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_form_builder.dynamic_fields</span> <span class="kn">import</span> <span class="n">get_fields_types</span>
+<span class="kn">from</span> <span class="nn">django_form_builder.models</span> <span class="kn">import</span> <span class="n">DynamicFieldMap</span>
+
+<span class="k">class</span> <span class="nc">MyFieldsListModel</span><span class="p">(</span><span class="n">DynamicFieldMap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class represents every single form field, each one linked to a unique object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># if you want to integrate dynamic fields with your own,</span>
+    <span class="c1"># define a new file that import all &#39;dynamic_fields&#39; and defines others new and</span>
+    <span class="c1"># then pass it as param to get_fields_types(class_name=my_custom_fields_file)</span>
+
+    <span class="n">my_entity</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">MyEntityClass</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">DynamicFieldMap</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;field_type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="n">get_fields_types</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Step 2</strong></p>
+<p>Every submitted <em>dynamic form</em>, if valid, save its content as a JSON.
+Once we have our fields model (step 1), we have to define a Model Class to save our compiled form JSON attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_form_builder.models</span> <span class="kn">import</span> <span class="n">SavedFormContent</span>
+
+<span class="k">class</span> <span class="nc">MyModelClass</span><span class="p">(</span><span class="n">SavedFormContent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class contains the JSON with all submitted form details</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Step 3</strong></p>
+<p>In your views, use/override <code class="docutils literal notranslate"><span class="pre">get_form()</span></code> and <code class="docutils literal notranslate"><span class="pre">compiled_form()</span></code> methods to respectively build form structure from scratch (using your <em>step 1</em> model class)
+and rebuild and fill it simply by the JSON field.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_form_builder.models</span> <span class="kn">import</span> <span class="n">DynamicFieldMap</span>
+
+<span class="o">...</span>
+
+<span class="c1"># the class used as foreign key in &#39;Step 1&#39;</span>
+<span class="k">class</span> <span class="nc">MyEntityClass</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+     <span class="o">...</span>
+
+     <span class="k">def</span> <span class="nf">get_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                  <span class="n">files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                  <span class="n">remove_filefields</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                  <span class="n">remove_datafields</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+       <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       Returns the form (empty if data=None)</span>
+<span class="sd">       if remove_filefields is not False, remove from form the passed FileFields</span>
+<span class="sd">       if remove_datafields is True, remove all fields different from FileFields</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+       <span class="c1"># retrieve all the fields (the model class is in &#39;Step 1&#39;)</span>
+       <span class="n">form_fields_from_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myfieldslistmodel</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;ordinamento&#39;</span><span class="p">)</span>
+       <span class="k">if</span> <span class="ow">not</span> <span class="n">form_fields_from_model</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+       <span class="c1"># Static method of DynamicFieldMap that build the constructor dictionary</span>
+       <span class="n">constructor_dict</span> <span class="o">=</span> <span class="n">DynamicFieldMap</span><span class="o">.</span><span class="n">build_constructor_dict</span><span class="p">(</span><span class="n">form_fields_from_model</span><span class="p">)</span>
+
+       <span class="c1"># more params to pass with &#39;data&#39;</span>
+       <span class="n">custom_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;extra_1&#39;</span><span class="p">:</span> <span class="n">value_1</span><span class="p">,</span>
+                        <span class="s1">&#39;extra_2&#39;</span><span class="p">:</span> <span class="n">value_2</span><span class="p">}</span>
+       <span class="c1"># the form retrieved by calling get_form() static method</span>
+       <span class="n">form</span> <span class="o">=</span> <span class="n">DynamicFieldMap</span><span class="o">.</span><span class="n">get_form</span><span class="p">(</span><span class="c1"># define it only if you</span>
+                                       <span class="c1"># need your custom form:</span>
+                                       <span class="c1"># class_obj=MyDynamicForm,</span>
+                                       <span class="n">constructor_dict</span><span class="o">=</span><span class="n">constructor_dict</span><span class="p">,</span>
+                                       <span class="n">custom_params</span><span class="o">=</span><span class="n">custom_params</span><span class="p">,</span>
+                                       <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                                       <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+                                       <span class="n">remove_filefields</span><span class="o">=</span><span class="n">remove_filefields</span><span class="p">,</span>
+                                       <span class="n">remove_datafields</span><span class="o">=</span><span class="n">remove_datafields</span><span class="p">)</span>
+
+       <span class="k">return</span> <span class="n">form</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_form_builder.models</span> <span class="kn">import</span> <span class="n">SavedFormContent</span>
+
+<span class="o">...</span>
+
+<span class="c1"># the class used in &#39;Step 2&#39;</span>
+<span class="k">class</span> <span class="nc">MyModelClass</span><span class="p">(</span><span class="n">SavedFormContent</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">compiled_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">remove_filefields</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the builded and filled form</span>
+<span class="sd">        Integrates django_form_builder.models.SavedFormContent.compiled_form</span>
+<span class="sd">        SavedFormContent.compiled_form uses DynamicFieldMap.get_form() filled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># set get_form() source class (step 1)</span>
+        <span class="n">form_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_entity</span>
+        <span class="c1"># set data source class (inherited from &#39;SavedFormContent&#39;)</span>
+        <span class="n">data_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modulo_compilato</span>
+
+        <span class="n">form</span> <span class="o">=</span> <span class="n">SavedFormContent</span><span class="o">.</span><span class="n">compiled_form</span><span class="p">(</span><span class="n">data_source</span><span class="o">=</span><span class="n">data_source</span><span class="p">,</span>
+                                              <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+                                              <span class="n">remove_filefields</span><span class="o">=</span><span class="n">remove_filefields</span><span class="p">,</span>
+                                              <span class="n">form_source</span><span class="o">=</span><span class="n">form_source</span><span class="p">,</span>
+                                              <span class="o">**</span><span class="n">other_extra_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">form</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../features/signed-files.html" class="btn btn-neutral float-right" title="Upload P7M and signed PDF files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="customization.html" class="btn btn-neutral" title="Create your DynamicFormClass and add static fields" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        2019, Università della Calabria.
+
+    </p>
+  </div>
+
+  <span style="font-size:0.8em">
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a>.
+  <br>Last update 03/07/2019
+  
+   </span>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

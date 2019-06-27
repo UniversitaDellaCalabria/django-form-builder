@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Add/Remove Formset dynamically with javascript &mdash; Django Form Builder 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+        <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Upload P7M and signed PDF files" href="signed-files.html" />
+    <link href="../_static/custom.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="../_static/favicon.ico">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+
+    
+    <a href="../index.html" id="logo_main"><img src="../_static/logo_unical.png" class="logo" alt="Logo" /></a>
+
+
+
+    <a id="title_under_logo" href="../index.html"> Django Form Builder
+
+</a>
+
+
+    
+    
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Installation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/requirements-setup.html">Requirements and Setup</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Use single fields in your form</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/single-fields/description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/single-fields/methods.html">Methods ad Attributes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/single-fields/customization.html">Create your own fields</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Build dynamic forms</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/dynamic-forms/description.html">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/dynamic-forms/customization.html">Add static fields to a form</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/dynamic-forms/configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Special features</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="signed-files.html">Digitally signed attachments</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Formset javascript manager</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+    <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+    <a href="../index.html">
+        <img src="../_static/logo_unical.png" class="logo" alt="Logo"/>
+        </a>
+    <a href="../index.html">
+        Django Form Builder
+    </a>
+
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Add/Remove Formset dynamically with javascript</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/features/formset.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="add-remove-formset-dynamically-with-javascript">
+<h1>Add/Remove Formset dynamically with javascript<a class="headerlink" href="#add-remove-formset-dynamically-with-javascript" title="Permalink to this headline">¶</a></h1>
+<p>Django Form Builder provides a particular type of field, <code class="docutils literal notranslate"><span class="pre">CustomComplexTableField</span></code>,
+that allows user to easily insert <a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/forms/formsets/">Django Formset</a> Fields in his form.</p>
+<p>The built-in javascript enables form inserting and removing via frontend, simply using the relative buttons!</p>
+<p>To build a formset just define the <code class="docutils literal notranslate"><span class="pre">CustomComplexTableField</span></code> attribute <em>valore</em> setting columuns.
+Divide each one using <em>#</em> char and, for every column, define the field type with a dictionary, like in the example</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>column1({&#39;type&#39;:&#39;CustomSelectBoxField&#39;, &#39;choices&#39;: &#39;value1;value2;value3&#39;,})#column2({&#39;type&#39;:&#39;CustomRadioBoxField&#39;, &#39;choices&#39;: &#39;value1;value2&#39;,})#column3#column4({&#39;type&#39;:&#39;BaseDateField&#39;,})
+</pre></div>
+</div>
+<p>Column with no params dict generate <code class="docutils literal notranslate"><span class="pre">CustomCharField</span></code> by default.</p>
+<hr class="docutils" />
+<a class=""
+               data-lightbox="group-83ee73af-0ca0-4a33-a10f-650ed16e2c7d"
+               href="../_images/formset1.png"
+               title=""
+               data-title=""
+               ><img src="../_images/formset1.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt=""/>
+                </a></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="signed-files.html" class="btn btn-neutral" title="Upload P7M and signed PDF files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        2019, Università della Calabria.
+
+    </p>
+  </div>
+
+  <span style="font-size:0.8em">
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a>.
+  <br>Last update 03/07/2019
+  
+   </span>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

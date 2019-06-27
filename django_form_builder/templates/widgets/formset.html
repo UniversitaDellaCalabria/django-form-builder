@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load static %}
+
+{% if not readonly %}
+    <div id="formset-template-{{ formset_id }}" style="display:none;" generic_id="{{ template_generic_id }}">
+        <div class="form-container">
+            <div class="form-row spacer">
+                <table style="width:100%">
+                    {{ formset_template }}
+                </table>
+                <button class="remove-form-row" id="remove-{{ formset_id }}-0">
+                    {% trans "Rimuovi inserimento" %}
+                </button>
+            </div>
+        </div>
+    </div>
+    {{ formset.management_form }}
+{% endif %}
+
+{% for form in formset %}
+<div class="form-container">
+    <div class="form-row spacer">
+        <table style="width:100%">
+            {{form}}
+        </table>
+    </div>
+    {% if not readonly %}
+        <button class="remove-form-row" id="remove-{{ formset_id }}-0">
+            {% trans "Rimuovi inserimento" %}
+        </button>
+    {% endif %}
+</div>
+{% endfor %}
+
+{% if not readonly %}
+    <div>
+        <button id="add-form-{{ formset_id }}" class="add-form-row">
+            {% trans "Aggiungi inserimento" %}
+        </button>
+    </div>
+{% endif %}

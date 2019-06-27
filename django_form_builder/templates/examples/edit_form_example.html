@@ -1,0 +1,56 @@
+{% extends 'base_form_example.html' %}
+
+{% load django_form_builder_tags %}
+{% load i18n %}
+
+{% block allegati %}
+    {% if allegati %}
+        <h3>{% trans "Attachments" %}</h3>
+        <table>
+            <tbody>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "File" %}</th>
+                    <th>{% trans "Details" %}</th>
+                    <th></th>
+                </tr>
+                {% for k,v in allegati.items %}
+                    <tr>
+                        <td>
+                            <b>{{k}}</b>
+                        </td>
+                        <td>{{v}}</td>
+                         <td>
+                        {% get_attachment_sign_details form_with_attachments attachments_path k v as sign_details %}
+                        {% if sign_details %}
+                            <ul>
+                            {% for kk, vv in sign_details.items %}
+                                <li>{{ kk }}: {{ vv }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                        -
+                        {% endif %}
+                        </td>
+                        <td>
+                            <!-- Button to download attachment (add URL) -->
+                            <a download href="#">
+                                <div class="button">
+                                    <i class="icon download"></i>
+                                    {% trans "Download" %}
+                                </div>
+                            </a>
+                            <!-- Button to remove attachment (add URL) -->
+                            <a href="#">
+                                <div>
+                                    <i class="icon trash"></i>
+                                    {% trans "Remove" %}
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock allegati %}

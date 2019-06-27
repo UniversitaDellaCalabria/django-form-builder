@@ -1,0 +1,7 @@
+*.pyc
+*~
+*__pycache__
+*/.~lock*
+/dist/
+/docs/build/*
+MANIFEST.in

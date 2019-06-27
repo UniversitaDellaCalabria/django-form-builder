@@ -1,0 +1,24 @@
+<form method="post" enctype="multipart/form-data">
+    {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {{ field.errors }}
+            {{ field }}
+            {% if field.help_text %}
+                <div>
+                    <p>
+                        <i>{{ field.help_text|safe }}</i>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {% block allegati %}{% endblock allegati %}
+
+    {% block formbuttons %}
+    <input type="submit" name="Submit" value="Submit" />
+    {% endblock formbuttons%}
+
+    {% csrf_token %}
+</form>
