@@ -57,7 +57,6 @@ def build_formset(choices, extra=0, required=False, prefix='form', data=None):
         field_dict = None
         if contenuto:
             coldict = contenuto.groupdict().get('coldict')
-            print("coldict", coldict)
             colname = contenuto.groupdict()['colname']
             if coldict:
                 field_dict = ast.literal_eval(coldict)
