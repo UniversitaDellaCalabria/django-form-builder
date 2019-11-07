@@ -67,7 +67,7 @@ class DynamicFieldMap(models.Model):
 
     class Meta:
         abstract = True
-        # ordering = ('ordinamento')
+        ordering = ('ordinamento')
 
 
 class SavedFormContent(models.Model):
