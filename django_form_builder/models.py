@@ -47,6 +47,7 @@ class DynamicFieldMap(models.Model):
                  custom_params={},
                  remove_filefields=False,
                  remove_datafields=False,
+                 fields_order=[],
                  *args, **kwargs):
         if class_obj == BaseDynamicForm:
             custom_params = {}
@@ -58,11 +59,9 @@ class DynamicFieldMap(models.Model):
             form.remove_files(allegati = remove_filefields)
         if remove_datafields:
             form.remove_datafields()
-        # if kwargs.get('files'):
-            # form.files = kwargs['files']
-        # if kwargs.get('data'):
-            # form.data = kwargs['data']
-            # form.is_bound = True
+        if fields_order:
+            print(fields_order)
+            form.order_fields(fields_order)
         return form
 
     class Meta:
@@ -83,6 +82,7 @@ class SavedFormContent(models.Model):
                       remove_filefields=True,
                       remove_datafields=False,
                       form_source=None,
+                      # fields_order=[],
                       extra_datas={},
                       **kwargs):
         json_dict = json.loads(data_source)
@@ -93,10 +93,13 @@ class SavedFormContent(models.Model):
         if not form_source:
             form_source = DynamicFieldMap
         form = form_source.get_form(data=data,
-                                        files=files,
-                                        remove_filefields=remove_filefields,
-                                        remove_datafields=remove_datafields,
-                                        **kwargs)
+                                    files=files,
+                                    remove_filefields=remove_filefields,
+                                    remove_datafields=remove_datafields,
+                                    **kwargs)
+        # Già invocato nel "form_source", ma è bene tenerlo come riferimento
+        # if fields_order:
+            # form.order_fields(fields_order)
         return form
 
     @staticmethod
