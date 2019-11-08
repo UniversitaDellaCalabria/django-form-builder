@@ -60,7 +60,6 @@ class DynamicFieldMap(models.Model):
         if remove_datafields:
             form.remove_datafields()
         if fields_order:
-            print(fields_order)
             form.order_fields(fields_order)
         return form
 
