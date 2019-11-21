@@ -30,7 +30,7 @@ ATTACH_NAME_MAX_LEN = 50
 
 # attachments validation messages
 WRONG_TYPE = _("Per favore esegui l'upload di soli file "
-               "in formato PDF, P7M o immagini. "
+               "in {}. "
                "Attualmente questo è '{}'")
 WRONG_SIZE = _("Per favore mantieni la dimensione del file entro {}. "
                "Attualmente questo è {}")

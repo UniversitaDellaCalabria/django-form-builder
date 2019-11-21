@@ -158,16 +158,20 @@ class CustomFileField(FileField, BaseCustomField):
         errors = []
         if data:
             msg = ''
-            if data.content_type not in PERMITTED_UPLOAD_FILETYPE:
+            permitted_upload_filetype = settings.PERMITTED_UPLOAD_FILETYPE or PERMITTED_UPLOAD_FILETYPE
+            max_upload_size = settings.MAX_UPLOAD_SIZE or MAX_UPLOAD_SIZE
+            attach_max_len = settings.ATTACH_NAME_MAX_LEN or ATTACH_NAME_MAX_LEN
+
+            if data.content_type not in permitted_upload_filetype:
                 msg_tmpl = WRONG_TYPE
-                msg = msg_tmpl.format(data.content_type)
-            elif data.size > int(MAX_UPLOAD_SIZE):
+                msg = msg_tmpl.format(permitted_upload_filetype, data.content_type)
+            elif data.size > int(max_upload_size):
                 msg_tmpl = WRONG_SIZE
-                msg = msg_tmpl.format(filesizeformat(MAX_UPLOAD_SIZE),
+                msg = msg_tmpl.format(filesizeformat(max_upload_size),
                                       filesizeformat(data.size))
-            elif len(data._name) > ATTACH_NAME_MAX_LEN:
+            elif len(data._name) > attach_max_len:
                 msg_tmpl = WRONG_LENGTH
-                msg = msg_tmpl.format(ATTACH_NAME_MAX_LEN, len(data._name))
+                msg = msg_tmpl.format(attach_max_len, len(data._name))
             if msg: errors.append(msg)
         return errors
 
