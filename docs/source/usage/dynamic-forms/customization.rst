@@ -28,8 +28,7 @@ If you need some static field in your form, than you can define a new Form Class
 	  my_static_field = getattr(dynamic_fields,
                                    'CustomFieldClass')(**my_static_field_data)
 	  self.fields[my_static_field_id] = my_static_field
-          self.fields[my_static_field_id].initial = self.descrizione_indicatore
-	    
+
 	  # call super() constructor to build form
 	  super().__init__(# define it only if you
                            # define a custom field source,
@@ -39,7 +38,7 @@ If you need some static field in your form, than you can define a new Form Class
  		           constructor_dict=constructor_dict,
 		           custom_params=custom_params,
 		           *args, **kwargs)
-	  
+
        # if needed, override clean() method with your own params
        def clean(self, *args, **kwargs):
            cleaned_data = super().clean(own_param=own_value)
