@@ -231,6 +231,14 @@ class PositiveIntegerField(DecimalField, BaseCustomField):
         data_kwargs['decimal_places'] = 0
         super().__init__(*args, **data_kwargs)
 
+    def raise_error(self, name, cleaned_data, **kwargs):
+        """
+        Solo numeri (espressioni del tipo 16e50 non sono ammesse)
+        """
+        if not cleaned_data: return []
+        if not re.match('^[0-9]+$', str(cleaned_data)):
+            return [_("Solo numeri ammessi"),]
+
 
 class PositiveFloatField(DecimalField, BaseCustomField):
     """
@@ -243,6 +251,14 @@ class PositiveFloatField(DecimalField, BaseCustomField):
         # Max 3 cifre decimali
         data_kwargs['decimal_places'] = 3
         super().__init__(*args, **data_kwargs)
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        """
+        Solo numeri (espressioni del tipo 16e50 non sono ammesse)
+        """
+        if not cleaned_data: return []
+        if not re.match('^[0-9]+\.?[0-9]?$', str(cleaned_data)):
+            return [_("Solo numeri ammessi"),]
 
 
 class TextAreaField(CharField, BaseCustomField):

@@ -26,8 +26,34 @@ class TestInvalidFields(BaseTest):
         Test invalid value in PositiveIntegerField
         Decimal value instead of Integer
         """
-        form = self.single_field_form('PositiveIntegerField', 0.1)
+        form = self.single_field_form('PositiveIntegerField', 16e50)
         logger.info("Test invalid PositiveIntegerField")
+        logger.info(get_labeled_errors(form))
+        self.assertFalse(form.is_valid())
+
+    def test_float_valid(self):
+        """
+        Test valid value in PositiveFloatField
+        """
+        form = self.single_field_form('PositiveFloatField', 4)
+        logger.info("Test valid PositiveFloatField")
+        assert form.is_valid()
+
+    def test_float_invalid(self):
+        """
+        Test invalid value in PositiveFloatField
+        """
+        form = self.single_field_form('PositiveFloatField', 16e50)
+        logger.info("Test invalid PositiveFloatField")
+        logger.info(get_labeled_errors(form))
+        self.assertFalse(form.is_valid())
+
+    def test_float_invalid_2(self):
+        """
+        Test invalid value in PositiveFloatField
+        """
+        form = self.single_field_form('PositiveFloatField', 4.3333)
+        logger.info("Test invalid PositiveFloatField")
         logger.info(get_labeled_errors(form))
         self.assertFalse(form.is_valid())
 
