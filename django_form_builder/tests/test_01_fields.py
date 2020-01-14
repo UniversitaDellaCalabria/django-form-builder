@@ -1,0 +1,130 @@
+import logging
+import os
+
+from django_form_builder import dynamic_fields
+from django_form_builder.settings import ATTACHMENTS_DICT_PREFIX, CLASSIFICATION_LIST
+from django_form_builder.templatetags.django_form_builder_tags import *
+from django_form_builder.utils import get_labeled_errors
+
+from . base import BaseTest
+
+
+logger = logging.getLogger('my_logger')
+
+class TestInvalidFields(BaseTest):
+
+    def test_integer_valid(self):
+        """
+        Test valid value in PositiveIntegerField
+        """
+        form = self.single_field_form('PositiveIntegerField', 44)
+        logger.info("Test valid PositiveIntegerField")
+        assert form.is_valid()
+
+    def test_integer_invalid(self):
+        """
+        Test invalid value in PositiveIntegerField
+        Decimal value instead of Integer
+        """
+        form = self.single_field_form('PositiveIntegerField', 0.1)
+        logger.info("Test invalid PositiveIntegerField")
+        logger.info(get_labeled_errors(form))
+        self.assertFalse(form.is_valid())
+
+    def test_date_startend_valid(self):
+        """
+        Test valid values in DateStartEndComplexField
+        """
+        data = {'data_inizio_dyn': '12/01/2020',
+                'data_fine_dyn': '12/03/2020'}
+        form = self.complex_field_form('DateStartEndComplexField', data)
+        logger.info("Test valid DateStartEndComplexField")
+        assert form.is_valid()
+
+    def test_date_startend_invalid(self):
+        """
+        Test invalid values in DateStartEndComplexField
+        Start date > End date
+        """
+        data = {'data_inizio_dyn': '12/01/2022',
+                'data_fine_dyn': '12/03/2020'}
+        form = self.complex_field_form('DateStartEndComplexField', data)
+        logger.info("Test valid DateStartEndComplexField")
+        self.assertFalse(form.is_valid())
+
+    def test_datetimefield_valid(self):
+        """
+        Test valid values in BaseDateTimeField
+        """
+        super_label = 'Field label'
+        field_id = dynamic_fields.format_field_name(super_label)
+        data = {'{}_data_dyn'.format(field_id): '11/01/2020',
+                '{}_ore_dyn'.format(field_id): '12',
+                '{}_minuti_dyn'.format(field_id): '12'}
+        form = self.complex_field_form('BaseDateTimeField',
+                                        data,
+                                        super_label)
+        logger.info("Test valid BaseDateTimeField")
+        assert form.is_valid()
+
+    def test_protocollo_invalid(self):
+        """
+        Test invalid values in ProtocolloField
+        data_protocollo > current date
+        """
+        data = {'tipo_numerazione_dyn': CLASSIFICATION_LIST[0][0],
+                'numero_protocollo_dyn': '12312 text',
+                'data_protocollo_dyn': '12/03/2010'}
+        form = self.complex_field_form('ProtocolloField', data)
+        logger.info("Test valid ProtocolloField")
+        assert form.is_valid()
+
+    def test_filefield(self):
+        """
+        Test valid value in PositiveIntegerField
+        """
+        file_test = self.create_fake_file()
+        form = self.single_field_form('CustomFileField',
+                                      file_value=file_test)
+        logger.info("Test valid CustomFileField")
+        assert form.is_valid()
+
+    def test_signed_pdf(self):
+        """
+        Test valid value in PositiveIntegerField
+        """
+        name = 'test_signed.pdf'
+        file_obj = self.get_file(name)
+        form = self.single_field_form('CustomSignedPdfField',
+                                      file_value=file_obj)
+        logger.info("Test valid CustomSignedPdfField")
+        assert form.is_valid()
+
+    def test_signed_pdf_show_details(self):
+        """
+        Test valid value in PositiveIntegerField
+        """
+        name = 'test_signed.pdf'
+        file_obj = self.get_file(name)
+        field = self.create_field('CustomSignedPdfField')[0]
+        field_id = dynamic_fields.format_field_name(field.label)
+        initial_fields = {field_id: field}
+        files = {field_id: file_obj}
+        form = self.get_baseform(initial_fields=initial_fields,
+                                 files=files)
+        logger.info("Test valid PDF signed file (sign details)")
+        logger.info(get_attachment_sign_details(form,
+                                                self.get_filepath(),
+                                                field_id,
+                                                name))
+        assert form.is_valid()
+
+    def test_signed_p7m(self):
+        """
+        Test valid value in PositiveIntegerField
+        """
+        name = 'test_signed.pdf.p7m'
+        file_obj = self.get_file(name)
+        form = self.single_field_form('CustomSignedP7MField', file_value=file_obj)
+        logger.info("Test valid CustomSignedP7MField")
+        assert form.is_valid()

@@ -6,7 +6,6 @@ from django.utils.safestring import mark_safe
 
 from . dynamic_fields import build_formset, CustomCharField
 from . settings import FORMSET_TEMPLATE_NAMEID
-from . utils import _split_choices
 
 
 class FormsetdWidget(forms.Widget):
@@ -48,7 +47,7 @@ class FormsetdWidget(forms.Widget):
                      formset.forms[0].as_table())
         return mark_safe(res)
 
-    def render(self, name, value, attrs=None, renderer=None):
+    def render(self, attrs=None, renderer=None):
         context_data = {'formset_id': self.prefix,
                         'template_generic_id': FORMSET_TEMPLATE_NAMEID,
                         'formset': self.formset,
@@ -64,3 +63,4 @@ class FormsetdWidget(forms.Widget):
                 field = form.fields[generic_field.name]
                 widget = field.widget
                 widget.attrs[attr] = True
+        return True

@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.utils import timezone
 from django.utils.html import strip_tags
@@ -52,7 +53,7 @@ def _successivo_ad_oggi(data_da_valutare):
     if data_da_valutare:
         return data_da_valutare > oggi
 
-# Unused formset methods
+# Unused formset method
 def get_formset_dict(data, clean=False):
     """data: dict
 
@@ -72,11 +73,10 @@ def get_formset_dict(data, clean=False):
          'ticket_subject': 'fgdfg'}
     """
     # crea la lista se nei campi esistono formsets
-    _re = '(?P<prefix_type>form)-(?P<prefix_index>[0-9]+)-(?P<name>.*)'
+    _re = '(?P<prefix_type>.*)-(?P<prefix_index>[0-9]+)-(?P<name>.*)'
     fields_to_be_removed = []
     d = data.copy()
 
-    formset_list = []
     formset_dict = {}
 
     formset_dict_catalog = {}
@@ -128,8 +128,8 @@ def get_as_dict(compiled_module_json={},
     torna il dizionario con gli allegati raggruppati in 'allegati'
     """
     # d = json.loads(self.modulo_compilato)
-    if compiled_module_json.get('allegati'):
-        if not allegati: del compiled_module_json['allegati']
+    if compiled_module_json.get(ATTACHMENTS_DICT_PREFIX):
+        if not allegati: del compiled_module_json[ATTACHMENTS_DICT_PREFIX]
 
     to_be_removed = []
     # Corregge i campi inseriti con spazi prima e dopo
@@ -155,10 +155,9 @@ def get_as_dict(compiled_module_json={},
 
     return compiled_module_json
 
-def get_allegati_dict(compiled_module):
-    # allegati_dict = self.get_as_dict().get('allegati')
-    json_dict = json.loads(compiled_module.modulo_compilato)
-    allegati_dict = get_as_dict(json_dict).get('allegati')
+def get_allegati_dict(compiled_module, pure_text=False):
+    json_dict = compiled_module if pure_text else json.loads(compiled_module.modulo_compilato)
+    allegati_dict = get_as_dict(json_dict).get(ATTACHMENTS_DICT_PREFIX)
     if allegati_dict:
         return allegati_dict
     else:
@@ -174,17 +173,18 @@ def get_allegati(compiled_module):
     else:
         return []
 
-def get_as_dict_with_allegati(compiled_module):
+def get_as_dict_with_allegati(compiled_module, pure_text=False):
     """
-    torna il dizionario con i field allegati originali
+    torna il dizionario senza la chiave ATTACHMENTS_DICT_PREFIX
+    per gli allegati
     """
-    json_dict = json.loads(compiled_module.modulo_compilato)
+    json_dict = compiled_module if pure_text else json.loads(compiled_module.modulo_compilato)
     d = get_as_dict(json_dict)
 
     # ricostruisco la struttura con gli allegati
-    allegati = d.get('allegati')
+    allegati = d.get(ATTACHMENTS_DICT_PREFIX)
     if allegati:
-        del d['allegati']
+        del d[ATTACHMENTS_DICT_PREFIX]
         d.update(allegati)
     return d
 

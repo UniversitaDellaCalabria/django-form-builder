@@ -26,7 +26,6 @@ class BaseDynamicForm(forms.Form):
         """
         super().__init__(*args, **kwargs)
         self.fields = initial_fields or self.fields
-
         # Costruzione dinamica dei rimanenti fields del form
         if constructor_dict:
             for key, value in constructor_dict.items():
@@ -45,9 +44,7 @@ class BaseDynamicForm(forms.Form):
                     custom_field.define_value(custom_field_values, **custom_params)
                     fields = custom_field.get_fields()
                     for field in fields:
-                        name = field_id
-                        if hasattr(field, 'name'):
-                            name = getattr(field, 'name')
+                        name = getattr(field, 'name') if hasattr(field, 'name') else field_id
                         self.fields[name]= field
 
                         if isinstance(field,
@@ -58,11 +55,12 @@ class BaseDynamicForm(forms.Form):
                                                                       field_required=field.required,
                                                                       prefix=name)
                         else:
-                            custom_widget = settings.CUSTOM_WIDGETS.get(field.__class__.__name__)
+                            custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field.__class__.__name__) \
+                                            if hasattr(settings, 'CUSTOM_WIDGETS') else None
                             if custom_widget:
                                 self.fields[name].widget = import_string(custom_widget)()
                             if hasattr(field, 'choices'):
-                                self.fields[name].choices = field.choices
+                                self.fields[name].choices = getattr(field, 'choices')
 
     def remove_not_compiled_fields(self):
         """

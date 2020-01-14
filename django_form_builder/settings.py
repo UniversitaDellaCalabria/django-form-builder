@@ -28,6 +28,8 @@ PERMITTED_UPLOAD_FILETYPE = BASE_FILETYPE + IMG_PERMITTED_UPLOAD_FILETYPE
 # maximum permitted filename lengh in attachments, uploads
 ATTACH_NAME_MAX_LEN = 50
 
+ATTACHMENTS_DICT_PREFIX = "allegati"
+
 # attachments validation messages
 WRONG_TYPE = _("Per favore esegui l'upload di soli file "
                "in {}. "

@@ -62,16 +62,13 @@ def build_formset(choices, extra=0, required=False, prefix='form', data=None):
                 field_dict = ast.literal_eval(coldict)
                 field_type_name = field_dict['type']
                 del field_dict['type']
-
-                custom_widget = settings.CUSTOM_WIDGETS.get(field_type_name)
-                if custom_widget:
-                    widget = import_string(custom_widget)()
-
                 custom_field = getattr(sys.modules[__name__], field_type_name)(**field_dict) \
                                if hasattr(sys.modules[__name__], field_type_name) else CustomCharField()
-                custom_widget = settings.CUSTOM_WIDGETS.get(field_type_name)
+                custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field_type_name) \
+                                if hasattr(settings, 'CUSTOM_WIDGETS') else None
                 if custom_widget:
                     custom_field.widget = import_string(custom_widget)()
+
                 if field_dict.get('choices'):
                     custom_field.choices += _split_choices(field_dict.get('choices'))
         else:
@@ -158,9 +155,9 @@ class CustomFileField(FileField, BaseCustomField):
         errors = []
         if data:
             msg = ''
-            permitted_upload_filetype = settings.PERMITTED_UPLOAD_FILETYPE or PERMITTED_UPLOAD_FILETYPE
-            max_upload_size = settings.MAX_UPLOAD_SIZE or MAX_UPLOAD_SIZE
-            attach_max_len = settings.ATTACH_NAME_MAX_LEN or ATTACH_NAME_MAX_LEN
+            permitted_upload_filetype = getattr(settings, 'PERMITTED_UPLOAD_FILETYPE') if hasattr(settings, 'PERMITTED_UPLOAD_FILETYPE') else PERMITTED_UPLOAD_FILETYPE
+            max_upload_size = getattr(settings, 'MAX_UPLOAD_SIZE') if hasattr(settings, 'MAX_UPLOAD_SIZE') else MAX_UPLOAD_SIZE
+            attach_max_len = getattr(settings, 'ATTACH_NAME_MAX_LEN') if hasattr(settings, 'ATTACH_NAME_MAX_LEN') else ATTACH_NAME_MAX_LEN
 
             if data.content_type not in permitted_upload_filetype:
                 msg_tmpl = WRONG_TYPE

@@ -65,7 +65,7 @@ class DynamicFieldMap(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ('ordinamento')
+        ordering = ('ordinamento',)
 
 
 class SavedFormContent(models.Model):
@@ -109,7 +109,7 @@ class SavedFormContent(models.Model):
         - Il campo "titolo" di default non viene mostrato
         - I fields sono readonly
         NOTA: i field select non risentono dell'attributo readonly!!!
-        Usato nei metodo che producono le anteprime non modificabili
+        Usato nei metodi che producono le anteprime non modificabili
         dei moduli compilati
         """
         form.remove_not_compiled_fields()
