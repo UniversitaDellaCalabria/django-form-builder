@@ -16,6 +16,13 @@ from . base import BaseTest
 
 logger = logging.getLogger('my_logger')
 
+class DynamicFieldMapFake(object):
+    """
+    Fake generic object to simulate a DynamicFieldMap
+    django_form_builder.models.DynamicFieldMap
+    """
+    pass
+
 class TestFormsets(BaseTest):
 
     def _simulateDynamicFieldMapEntity(self,
@@ -24,16 +31,15 @@ class TestFormsets(BaseTest):
                                        valore=''):
         """
         Simulate a DynamicFieldMap object init
-        Using a single form field, inserting needed variables
+        Using a generic object and inserting needed variables
         """
-        field = self.create_field(field_type,
-                                  field_label=name)[0]
-        field.name = name
-        field.field_type = field_type
-        field.is_required = field.required
-        field.valore = valore
-        field.aiuto = field.help_text
-        return field
+        field_map_entity = DynamicFieldMapFake()
+        field_map_entity.name = name
+        field_map_entity.field_type = field_type
+        field_map_entity.is_required = True
+        field_map_entity.valore = valore
+        field_map_entity.aiuto = "example help test"
+        return field_map_entity
 
     def setUp(self):
         """
