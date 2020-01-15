@@ -47,7 +47,7 @@ class FormsetdWidget(forms.Widget):
                      formset.forms[0].as_table())
         return mark_safe(res)
 
-    def render(self, attrs=None, renderer=None):
+    def render(self, name='', value='', attrs=None, renderer=None):
         context_data = {'formset_id': self.prefix,
                         'template_generic_id': FORMSET_TEMPLATE_NAMEID,
                         'formset': self.formset,

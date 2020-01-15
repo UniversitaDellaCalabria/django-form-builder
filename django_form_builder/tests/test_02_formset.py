@@ -122,5 +122,4 @@ class TestFormsets(BaseTest):
         logger.info("Test form with formset widget (FormsetdWidget)")
         logger.info(get_formset_labeled_errors(formset_field.widget.formset.errors))
         assert formset_field.widget.get_js_template()
-        assert formset_field.widget.render()
         assert formset_field.widget.make_readonly()
