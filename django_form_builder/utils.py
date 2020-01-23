@@ -199,6 +199,7 @@ def get_POST_as_json(request, fields_to_pop=[]):
     for field_name in fields_to_pop:
         if field_name in d:
             d.pop(field_name)
-    d.pop("csrfmiddlewaretoken")
+    if "csrfmiddlewaretoken" in d:
+        d.pop("csrfmiddlewaretoken")
     json_data = json.dumps(d, indent=2)
     return json_data
