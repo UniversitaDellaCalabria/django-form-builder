@@ -16,6 +16,7 @@ class BaseDynamicForm(forms.Form):
                  initial_fields={},
                  constructor_dict={},
                  custom_params={},
+                 ignore_format_field_name=False,
                  *args,
                  **kwargs):
         """
@@ -29,7 +30,10 @@ class BaseDynamicForm(forms.Form):
         # Costruzione dinamica dei rimanenti fields del form
         if constructor_dict:
             for key, value in constructor_dict.items():
-                field_id = dynamic_fields.format_field_name(key)
+                if ignore_format_field_name:
+                    field_id = key
+                else:
+                    field_id = dynamic_fields.format_field_name(key)
                 data_kwargs = {'label': key.title()}
                 custom_field_name = value[0]
                 custom_field_dict = value[1]
@@ -46,7 +50,6 @@ class BaseDynamicForm(forms.Form):
                     for field in fields:
                         name = getattr(field, 'name') if hasattr(field, 'name') else field_id
                         self.fields[name]= field
-
                         if isinstance(field,
                                       dynamic_fields.CustomComplexTableField):
                             choices = _split_choices_in_list_canc(custom_field_values)

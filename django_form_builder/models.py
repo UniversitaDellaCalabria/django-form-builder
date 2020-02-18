@@ -77,6 +77,7 @@ class SavedFormContent(models.Model):
 
     @staticmethod
     def compiled_form(data_source=None,
+                      constructor_dict={},
                       files=None,
                       remove_filefields=True,
                       remove_datafields=False,
@@ -91,7 +92,8 @@ class SavedFormContent(models.Model):
                 data[k]=v
         if not form_source:
             form_source = DynamicFieldMap
-        form = form_source.get_form(data=data,
+        form = form_source.get_form(constructor_dict=constructor_dict,
+                                    data=data,
                                     files=files,
                                     remove_filefields=remove_filefields,
                                     remove_datafields=remove_datafields,
