@@ -89,9 +89,6 @@ class BaseCustomField(Field):
     is_complex = False
     is_formset = False
 
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
-
     def define_value(self, custom_value=None, **kwargs):
         """
         Integra la costruzione del field con informazioni aggiuntive
@@ -121,6 +118,13 @@ class CustomCharField(CharField, BaseCustomField):
 
     def __init__(self, *args, **data_kwargs):
         super().__init__(*args, **data_kwargs)
+
+
+class CustomEmailField(EmailField, BaseCustomField):
+    """
+    EmailField
+    """
+    field_type = _("E-mail")
 
 
 class CustomChoiceField(ChoiceField, BaseCustomField):
@@ -268,9 +272,6 @@ class TextAreaField(CharField, BaseCustomField):
     field_type = _("Testo lungo")
     widget = forms.Textarea()
 
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
-
 
 class CheckBoxField(BooleanField, BaseCustomField):
     """
@@ -278,9 +279,6 @@ class CheckBoxField(BooleanField, BaseCustomField):
     """
     field_type = _("Checkbox")
     widget = forms.CheckboxInput()
-
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
 
 
 class CustomSelectBoxField(CustomChoiceField):
@@ -308,9 +306,6 @@ class BaseDateField(DateField, BaseCustomField):
     field_type = _("Data")
     widget = forms.DateInput()
     input_formats = settings.DATE_INPUT_FORMATS
-
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
 
 
 class BaseDateTimeField(BaseCustomField):
@@ -466,9 +461,6 @@ class CustomHiddenField(CharField, BaseCustomField):
     """
     field_type = _("Campo nascosto")
 
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
-
     def define_value(self, custom_value, **kwargs):
         self.widget = forms.HiddenInput(attrs={'value': custom_value})
 
@@ -479,9 +471,6 @@ class DurataComeInteroField(PositiveIntegerField):
     """
     field_type = _("Durata come numero intero (anni,mesi,ore)")
     name = 'durata_come_intero'
-
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
 
 
 class CustomComplexTableField(ChoiceField, BaseCustomField):
