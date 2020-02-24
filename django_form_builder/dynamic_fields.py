@@ -36,6 +36,7 @@ def format_field_name(field_name, lower=True):
     f = field_name.replace(' ','_')
     f = f.replace('(','')
     f = f.replace(')','')
+    f = f.replace('/','_')
     if lower: return f.lower()
     return f.upper
 
@@ -354,7 +355,7 @@ class DateStartEndComplexField(BaseCustomField):
 
         # Data Inizio
         self.start = BaseDateField(*args, **data_kwargs)
-        self.start.required = True
+        self.start.required = data_kwargs.get('required')
         self.start.label = _("{} (Data inizio)").format(parent_label)
         self.start.name = "{}_dyn".format(format_field_name(self.start.label))
 
@@ -363,7 +364,7 @@ class DateStartEndComplexField(BaseCustomField):
 
         # Data Fine
         self.end = BaseDateField(*args, **data_kwargs)
-        self.end.required = True
+        self.end.required = data_kwargs.get('required')
         self.end.label = _("{} (Data fine)").format(parent_label)
         self.end.name = "{}_dyn".format(format_field_name(self.end.label))
 
@@ -409,6 +410,7 @@ class ProtocolloField(BaseCustomField):
 
         # Tipo protocollo. SelectBox
         self.tipo = CustomSelectBoxField(*args, **data_kwargs)
+        self.tipo.required = data_kwargs.get('required')
         self.tipo.label = _("{} (Tipo numerazione)").format(parent_label)
         self.tipo.name = "{}_dyn".format(format_field_name(self.tipo.label))
         self.tipo.help_text = _("Scegli se protocollo/decreto/delibera, "
@@ -419,7 +421,7 @@ class ProtocolloField(BaseCustomField):
 
         # Numero protocollo. CharField
         self.numero = CustomCharField(*args, **data_kwargs)
-        self.numero.required = True
+        self.numero.required = data_kwargs.get('required')
         self.numero.label = _("{} (Numero Protocollo/Delibera/Decreto)").format(parent_label)
         self.numero.name = "{}_dyn".format(format_field_name(self.numero.label))
         self.numero.help_text = _("Indica il numero del "
@@ -428,6 +430,7 @@ class ProtocolloField(BaseCustomField):
 
         # Data protocollo. DateField
         self.data = BaseDateField(*args, **data_kwargs)
+        self.data.required = data_kwargs.get('required')
         self.data.label = _("{} (Data Protocollo/Delibera/Decreto)").format(parent_label)
         self.data.name = "{}_dyn".format(format_field_name(self.data.label))
         self.data.help_text = _("Indica la data del protocollo/delibera/decreto")
