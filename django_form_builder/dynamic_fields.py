@@ -350,11 +350,13 @@ class DateStartEndComplexField(BaseCustomField):
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
+        parent_label = data_kwargs.get('label')
+
         # Data Inizio
         self.start = BaseDateField(*args, **data_kwargs)
         self.start.required = True
-        self.start.label = _('Data Inizio')
-        self.start.name = "data_inizio_dyn"
+        self.start.label = _("{} (Data inizio)").format(parent_label)
+        self.start.name = "{}_dyn".format(format_field_name(self.start.label))
 
         # Riferimento a DateStartEndComplexField
         self.start.parent = self
@@ -362,8 +364,8 @@ class DateStartEndComplexField(BaseCustomField):
         # Data Fine
         self.end = BaseDateField(*args, **data_kwargs)
         self.end.required = True
-        self.end.label = _('Data Fine')
-        self.end.name = "data_fine_dyn"
+        self.end.label = _("{} (Data fine)").format(parent_label)
+        self.end.name = "{}_dyn".format(format_field_name(self.end.label))
 
         # Riferimento a DateStartEndComplexField
         self.end.parent = self
@@ -403,10 +405,12 @@ class ProtocolloField(BaseCustomField):
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
+        parent_label = data_kwargs.get('label')
+
         # Tipo protocollo. SelectBox
         self.tipo = CustomSelectBoxField(*args, **data_kwargs)
-        self.tipo.label = _("Tipo Protocollo/Delibera/Decreto")
-        self.tipo.name = "tipo_numerazione_dyn"
+        self.tipo.label = _("{} (Tipo numerazione)").format(parent_label)
+        self.tipo.name = "{}_dyn".format(format_field_name(self.tipo.label))
         self.tipo.help_text = _("Scegli se protocollo/decreto/delibera, "
                                 "al/alla quale la numerazione è riferita")
         self.tipo.choices += [(i[0].lower().replace(' ', '_'), i[1]) \
@@ -416,16 +420,16 @@ class ProtocolloField(BaseCustomField):
         # Numero protocollo. CharField
         self.numero = CustomCharField(*args, **data_kwargs)
         self.numero.required = True
-        self.numero.label = _("Numero Protocollo/Delibera/Decreto")
-        self.numero.name = "numero_protocollo_dyn"
+        self.numero.label = _("{} (Numero Protocollo/Delibera/Decreto)").format(parent_label)
+        self.numero.name = "{}_dyn".format(format_field_name(self.numero.label))
         self.numero.help_text = _("Indica il numero del "
                                   "protocollo/decreto/delibera")
         self.numero.parent = self
 
         # Data protocollo. DateField
         self.data = BaseDateField(*args, **data_kwargs)
-        self.data.name = "data_protocollo_dyn"
-        self.data.label = _("Data Protocollo/Delibera/Decreto")
+        self.data.label = _("{} (Data Protocollo/Delibera/Decreto)").format(parent_label)
+        self.data.name = "{}_dyn".format(format_field_name(self.data.label))
         self.data.help_text = _("Indica la data del protocollo/delibera/decreto")
         self.data.parent = self
 
@@ -465,19 +469,11 @@ class CustomHiddenField(CharField, BaseCustomField):
         self.widget = forms.HiddenInput(attrs={'value': custom_value})
 
 
-class DurataComeInteroField(PositiveIntegerField):
-    """
-    Durata come Intero positivo
-    """
-    field_type = _("Durata come numero intero (anni,mesi,ore)")
-    name = 'durata_come_intero'
-
-
 class CustomComplexTableField(ChoiceField, BaseCustomField):
     """
     CustomComplexTableField
     """
-    validation_error = _('Questo campo necessita di almeno una riga')
+    validation_error = _("Questo campo necessita di almeno una riga")
     field_type = _("Inserimenti multipli")
     is_complex = True
     is_formset = True
