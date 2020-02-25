@@ -9,12 +9,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='0.1',
+    version='0.8.0',
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',
-    description="Django Form Builder",
+    description="Django Form builder",
     long_description=README,
+    long_description_content_type='text/markdown',
     url='https://github.com/UniversitaDellaCalabria/django-form-builder',
     author='Giuseppe De Marco, Francesco Filicetti',
     author_email='giuseppe.demarco@unical.it, francesco.filicetti@unical.it',
@@ -22,12 +23,14 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 3.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+    ],
+    install_requires=[
+        'filesig>=0.3'
     ],
 )

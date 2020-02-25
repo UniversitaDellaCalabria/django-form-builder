@@ -1,6 +1,10 @@
+filesig.egg-info/
 *.pyc
 *~
 *__pycache__
 */.~lock*
 /dist/
 /docs/build/*
+build/*
+*.egg-info/
+
