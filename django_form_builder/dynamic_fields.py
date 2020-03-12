@@ -15,7 +15,10 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
 
-from filesig import get_signatures
+try:
+    from filesig.filesig import get_signatures
+except:
+    from filesig import get_signatures
 
 from . settings import *
 from . utils import (_split_choices,
