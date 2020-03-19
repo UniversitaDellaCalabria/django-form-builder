@@ -7,9 +7,12 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+# python3 setup.py sdist
+# python3 -m twine upload
+
 setup(
     name='django-form-builder',
-    version='0.8.1',
+    version='0.8.2',
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',

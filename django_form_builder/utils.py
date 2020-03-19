@@ -188,18 +188,19 @@ def get_as_dict_with_allegati(compiled_module, pure_text=False):
         d.update(allegati)
     return d
 
-def set_as_dict(obj, modulo_compilato_dict, fields_to_pop=[]):
+def set_as_dict(obj, modulo_compilato_dict, fields_to_pop=[], indent=False):
     for field in fields_to_pop:
         modulo_compilato_dict.pop(field)
-    obj.modulo_compilato = json.dumps(modulo_compilato_dict, indent=2)
+    obj.modulo_compilato = json.dumps(modulo_compilato_dict) \
+                           if not indent \
+                           else json.dumps(modulo_compilato_dict, indent=2)
     obj.save()
 
-def get_POST_as_json(request, fields_to_pop=[]):
+def get_POST_as_json(request, fields_to_pop=[], indent=False):
     d = {k:v for k,v in request.POST.items()}
     for field_name in fields_to_pop:
         if field_name in d:
             d.pop(field_name)
-    if "csrfmiddlewaretoken" in d:
-        d.pop("csrfmiddlewaretoken")
-    json_data = json.dumps(d, indent=2)
+    if "csrfmiddlewaretoken" in d: d.pop("csrfmiddlewaretoken")
+    json_data = json.dumps(d) if not indent else json.dumps(d, indent=2)
     return json_data
