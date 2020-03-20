@@ -153,7 +153,7 @@ class CustomFileField(FileField, BaseCustomField):
     """
     FileField
     """
-    field_type = _("Allegato PDF")
+    field_type = _("Allegato (generico)")
 
     def __init__(self, *args, **data_kwargs):
         super().__init__(*args, **data_kwargs)
@@ -163,7 +163,9 @@ class CustomFileField(FileField, BaseCustomField):
         errors = []
         if data:
             msg = ''
-            permitted_upload_filetype = getattr(settings, 'PERMITTED_UPLOAD_FILETYPE') if hasattr(settings, 'PERMITTED_UPLOAD_FILETYPE') else PERMITTED_UPLOAD_FILETYPE
+            self_valid_extensions = getattr(self, 'valid_extensions') if hasattr(self, 'valid_extensions') else None
+            settings_upload_filetype = getattr(settings, 'PERMITTED_UPLOAD_FILETYPE') if hasattr(settings, 'PERMITTED_UPLOAD_FILETYPE') else PERMITTED_UPLOAD_FILETYPE
+            permitted_upload_filetype = self_valid_extensions or settings_upload_filetype
             max_upload_size = getattr(settings, 'MAX_UPLOAD_SIZE') if hasattr(settings, 'MAX_UPLOAD_SIZE') else MAX_UPLOAD_SIZE
             attach_max_len = getattr(settings, 'ATTACH_NAME_MAX_LEN') if hasattr(settings, 'ATTACH_NAME_MAX_LEN') else ATTACH_NAME_MAX_LEN
 
@@ -179,6 +181,39 @@ class CustomFileField(FileField, BaseCustomField):
                 msg = msg_tmpl.format(attach_max_len, len(data._name))
             if msg: errors.append(msg)
         return errors
+
+
+class CustomImageField(CustomFileField):
+    """
+    FileField
+    """
+    field_type = _("Allegato Immagine")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = getattr(settings, 'IMG_FILETYPE') if hasattr(settings, 'IMG_FILETYPE') else IMG_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
+
+class CustomDataField(CustomFileField):
+    """
+    FileField
+    """
+    field_type = _("Allegato file dati (JSON, CSV, Excel)")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = getattr(settings, 'DATA_FILETYPE') if hasattr(settings, 'DATA_FILETYPE') else DATA_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
+
+class CustomPDFField(CustomFileField):
+    """
+    FileField
+    """
+    field_type = _("Allegato PDF")
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = getattr(settings, 'PDF_FILETYPE') if hasattr(settings, 'PDF_FILETYPE') else PDF_FILETYPE
+        super().__init__(*args, **data_kwargs)
 
 
 class CustomSignedFileField(CustomFileField):
@@ -219,12 +254,20 @@ class CustomSignedPdfField(CustomSignedFileField):
     field_type = _("Allegato PDF firmato")
     fileformat = 'pdf'
 
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = getattr(settings, 'PDF_FILETYPE') if hasattr(settings, 'PDF_FILETYPE') else PDF_FILETYPE
+        super().__init__(*args, **data_kwargs)
+
 
 class CustomSignedP7MField(CustomSignedFileField):
     """
     """
     field_type = _("Allegato P7M firmato")
     fileformat = 'p7m'
+
+    def __init__(self, *args, **data_kwargs):
+        self.valid_extensions = getattr(settings, 'P7M_FILETYPE') if hasattr(settings, 'P7M_FILETYPE') else P7M_FILETYPE
+        super().__init__(*args, **data_kwargs)
 
 
 class PositiveIntegerField(DecimalField, BaseCustomField):
