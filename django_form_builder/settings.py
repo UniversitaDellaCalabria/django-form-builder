@@ -26,10 +26,11 @@ DATA_FILETYPE = ('text/csv', 'application/json',
                  'application/vnd.ms-excel',
                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                  'application/vnd.oasis.opendocument.spreadsheet',
+                 'application/wps-office.xls',
                  )
 TEXT_FILETYPE = ('text/plain',
                  'application/vnd.oasis.opendocument.text',
-                 'application/msword,'
+                 'application/msword'.
                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 )
 IMG_FILETYPE = ('image/jpeg', 'image/png', 'image/gif', 'image/x-ms-bmp')
