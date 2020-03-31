@@ -12,7 +12,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='0.8.5',
+    version='0.8.6',
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',

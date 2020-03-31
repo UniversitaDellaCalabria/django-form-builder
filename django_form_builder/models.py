@@ -22,6 +22,7 @@ class DynamicFieldMap(models.Model):
                                         " (Es: valore1;valore2;valore3...)")
     is_required = models.BooleanField(default=True)
     aiuto = models.CharField(max_length=254, blank=True, default='')
+    pre_text = models.TextField(blank=True, default='')
     ordinamento = models.PositiveIntegerField(help_text="posizione nell'ordinamento",
                                               blank=True,
                                               default=0)
@@ -36,9 +37,11 @@ class DynamicFieldMap(models.Model):
         for field in fields:
             d = {'label': field.name,
                  'required' : field.is_required,
-                 'help_text' : field.aiuto}
+                 'help_text' : field.aiuto,
+                 'pre_text': field.pre_text}
             constructor_dict[field.name] = (field.field_type,
-                                            d, field.valore)
+                                            d,
+                                            field.valore)
         return constructor_dict
 
     @staticmethod

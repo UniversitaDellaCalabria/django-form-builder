@@ -30,7 +30,7 @@ DATA_FILETYPE = ('text/csv', 'application/json',
                  )
 TEXT_FILETYPE = ('text/plain',
                  'application/vnd.oasis.opendocument.text',
-                 'application/msword'.
+                 'application/msword',
                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 )
 IMG_FILETYPE = ('image/jpeg', 'image/png', 'image/gif', 'image/x-ms-bmp')

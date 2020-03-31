@@ -37,6 +37,7 @@ class BaseDynamicForm(forms.Form):
                 data_kwargs = {'label': key.title()}
                 custom_field_name = value[0]
                 custom_field_dict = value[1]
+                pre_text = custom_field_dict.pop('pre_text')
                 custom_field_values = value[2]
                 # add custom attrs
                 data_kwargs.update(custom_field_dict)
@@ -50,6 +51,7 @@ class BaseDynamicForm(forms.Form):
                     for field in fields:
                         name = getattr(field, 'name') if hasattr(field, 'name') else field_id
                         self.fields[name]= field
+                        self.fields[name].pre_text = pre_text
                         if isinstance(field,
                                       dynamic_fields.CustomComplexTableField):
                             choices = _split_choices_in_list_canc(custom_field_values)
