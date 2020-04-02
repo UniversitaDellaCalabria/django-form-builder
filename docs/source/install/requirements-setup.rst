@@ -6,6 +6,14 @@
 Requirements and Setup
 ======================
 
+Install ``django-form-builder`
+
+.. code-block:: python
+    python setup.py install
+    # or
+    pip install django-form-builder
+
+
 Only ``FileSignatureValidator`` library is required as system dependency, it is needed to verify digitally signed attachments.
 See also requirements for python requirements.
 

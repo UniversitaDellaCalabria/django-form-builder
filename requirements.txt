@@ -1,0 +1,2 @@
+django>=2.0,<4.0
+filesig>=0.3

@@ -1,3 +1,5 @@
+import copy
+
 from django import forms
 from django.conf import settings
 from django.forms.fields import FileField
@@ -29,6 +31,7 @@ class BaseDynamicForm(forms.Form):
         self.fields = initial_fields or self.fields
         # Costruzione dinamica dei rimanenti fields del form
         if constructor_dict:
+            constructor_dict = copy.deepcopy(constructor_dict)
             for key, value in constructor_dict.items():
                 if ignore_format_field_name:
                     field_id = key
