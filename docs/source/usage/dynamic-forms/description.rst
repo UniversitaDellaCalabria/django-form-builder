@@ -14,12 +14,11 @@ Every form can be saved in a configurable storage, in JSON format or simply defi
 
   .. code-block:: python
 
-  from django_form_builder.forms import BaseDynamicForm
-  from django_form_builder.models import DynamicFieldMap
-  from collections import OrderedDict
+     from django_form_builder.forms import BaseDynamicForm
+     from django_form_builder.models import DynamicFieldMap
+     from collections import OrderedDict
 
-
-  constructor_dict = OrderedDict([('Telefono',  # field name
+     constructor_dict = OrderedDict([('Telefono',  # field name
                   ('CustomCharField',           # defines the FieldType
                    {'label': 'Telefono',
                     'required': True,
@@ -55,7 +54,7 @@ Every form can be saved in a configurable storage, in JSON format or simply defi
                     'pre_text': ''},
                    'first_name#last_name#place_of_birth#date_of_birth#codice_fiscale#email#tel#valid_until'))])
 
-    form = DynamicFieldMap.get_form(BaseDynamicForm,
+       form = DynamicFieldMap.get_form(BaseDynamicForm,
                                 constructor_dict=constructor_dict,
                                 custom_params=None,
                                 #data=data,   # if there's some data to load
