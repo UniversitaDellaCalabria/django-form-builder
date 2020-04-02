@@ -10,7 +10,7 @@ from . captcha import get_captcha
 from . enc import encrypt, decrypt
 from . formsets import build_formset
 
-settings.FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID', 'NNNNN')
+FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID', 'NNNNN')
 
 
 class CaptchaWidget(forms.Widget):
