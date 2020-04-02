@@ -7,7 +7,6 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.module_loading import import_string
 
 from . import dynamic_fields
-from . settings import *
 from . utils import _split_choices_in_list_canc
 from . widgets import FormsetdWidget
 

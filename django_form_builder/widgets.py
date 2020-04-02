@@ -25,6 +25,10 @@ class CaptchaWidget(forms.Widget):
         return self._render(self.template_name, context, renderer)
 
 
+FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
+                                  FORMSET_TEMPLATE_NAMEID)
+
+
 class FormsetdWidget(forms.Widget):
 
     def __init__(self, *attrs, **kwargs):

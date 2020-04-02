@@ -1,10 +1,19 @@
 import json
 import re
 
+from django.conf import settings
 from django.utils import timezone
 from django.utils.html import strip_tags
 
-from . settings import *
+from . settings import (ATTACHMENTS_DICT_PREFIX,
+                        MANAGEMENT_FORMSET_STRINGS)
+
+
+ATTACHMENTS_DICT_PREFIX = getattr(settings, 'ATTACHMENTS_DICT_PREFIX',
+                                  ATTACHMENTS_DICT_PREFIX)
+MANAGEMENT_FORMSET_STRINGS = getattr(settings, 'MANAGEMENT_FORMSET_STRINGS',
+                                     MANAGEMENT_FORMSET_STRINGS)
+
 
 def get_labeled_errors(form):
     d = {}
@@ -13,12 +22,14 @@ def get_labeled_errors(form):
         d[field.label] = form.errors[field_name]
     return d
 
+
 def get_formset_labeled_errors(formset_errors):
     d = {}
     for err in formset_errors:
         for k,v in err.items():
             d[k] = strip_tags(v)
     return d
+
 
 def _split_choices(choices_string):
     """
@@ -29,6 +40,7 @@ def _split_choices(choices_string):
     choices = tuple((x, x) for x in str_split)
     return choices
 
+
 def _split_choices_in_list(choices_string):
     """
     Riceve una stringa e la splitta ogni ';'
@@ -36,6 +48,7 @@ def _split_choices_in_list(choices_string):
     """
     str_split = choices_string.split(';')
     return str_split
+
 
 def _split_choices_in_list_canc(choices_string):
     """
@@ -45,6 +58,7 @@ def _split_choices_in_list_canc(choices_string):
     str_split = choices_string.split('#')
     return str_split
 
+
 def _successivo_ad_oggi(data_da_valutare):
     """
     Ci dice se una data è successiva alla data di oggi
@@ -52,6 +66,7 @@ def _successivo_ad_oggi(data_da_valutare):
     oggi = timezone.localdate()
     if data_da_valutare:
         return data_da_valutare > oggi
+
 
 # Unused formset method
 def get_formset_dict(data, clean=False):
@@ -99,6 +114,7 @@ def get_formset_dict(data, clean=False):
     d['formsets'] = formset_dict
     return d
 
+
 def get_formset_list(data):
     """
     return a list like
@@ -121,6 +137,7 @@ def get_formset_list(data):
             formd[k] = v
         l.append(formd)
     return l
+
 
 def get_as_dict(compiled_module_json={},
                 allegati=True, formset_management=True):
