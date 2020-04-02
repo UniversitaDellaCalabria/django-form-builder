@@ -1,11 +1,16 @@
 import re
 
 from django import forms
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
 from . dynamic_fields import build_formset, CustomCharField
 from . settings import FORMSET_TEMPLATE_NAMEID
+
+
+FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
+                                  FORMSET_TEMPLATE_NAMEID)
 
 
 class FormsetdWidget(forms.Widget):

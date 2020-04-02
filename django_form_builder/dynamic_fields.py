@@ -25,6 +25,23 @@ from . utils import (_split_choices,
                      _split_choices_in_list_canc,
                      _successivo_ad_oggi)
 
+
+MAX_UPLOAD_SIZE = getattr(settings, 'MAX_UPLOAD_SIZE', MAX_UPLOAD_SIZE)
+ATTACH_NAME_MAX_LEN = getattr(settings, 'ATTACH_NAME_MAX_LEN',
+                              ATTACH_NAME_MAX_LEN)
+PERMITTED_UPLOAD_FILETYPE = getattr(settings,
+                                    'PERMITTED_UPLOAD_FILETYPE',
+                                    PERMITTED_UPLOAD_FILETYPE)
+WRONG_TYPE = getattr(settings, 'WRONG_TYPE', WRONG_TYPE)
+WRONG_SIZE = getattr(settings, 'WRONG_SIZE', WRONG_SIZE)
+WRONG_LENGHT = getattr(settings, 'WRONG_LENGHT', WRONG_LENGHT)
+IMG_FILETYPE = getattr(settings, 'IMG_FILETYPE', IMG_FILETYPE) 
+DATA_FILETYPE = getattr(settings, 'DATA_FILETYPE', DATA_FILETYPE)
+PDF_FILETYPE = getattr(settings, 'PDF_FILETYPE', PDF_FILETYPE)
+P7M_FILETYPE = getattr(settings, 'P7M_FILETYPE', P7M_FILETYPE) 
+CLASSIFICATION_LIST = getattr(settings, 'CLASSIFICATION_LIST', CLASSIFICATION_LIST)
+
+
 def get_fields_types(class_name=sys.modules[__name__]):
     fields_types = []
     for m in inspect.getmembers(class_name, inspect.isclass):
@@ -164,10 +181,10 @@ class CustomFileField(FileField, BaseCustomField):
         if data:
             msg = ''
             self_valid_extensions = getattr(self, 'valid_extensions') if hasattr(self, 'valid_extensions') else None
-            settings_upload_filetype = getattr(settings, 'PERMITTED_UPLOAD_FILETYPE') if hasattr(settings, 'PERMITTED_UPLOAD_FILETYPE') else PERMITTED_UPLOAD_FILETYPE
+            settings_upload_filetype = PERMITTED_UPLOAD_FILETYPE
             permitted_upload_filetype = self_valid_extensions or settings_upload_filetype
-            max_upload_size = getattr(settings, 'MAX_UPLOAD_SIZE') if hasattr(settings, 'MAX_UPLOAD_SIZE') else MAX_UPLOAD_SIZE
-            attach_max_len = getattr(settings, 'ATTACH_NAME_MAX_LEN') if hasattr(settings, 'ATTACH_NAME_MAX_LEN') else ATTACH_NAME_MAX_LEN
+            max_upload_size = MAX_UPLOAD_SIZE
+            attach_max_len = ATTACH_NAME_MAX_LEN
 
             if data.content_type not in permitted_upload_filetype:
                 msg_tmpl = WRONG_TYPE
@@ -190,7 +207,7 @@ class CustomImageField(CustomFileField):
     field_type = _("Allegato Immagine")
 
     def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = getattr(settings, 'IMG_FILETYPE') if hasattr(settings, 'IMG_FILETYPE') else IMG_FILETYPE
+        self.valid_extensions = IMG_FILETYPE
         super().__init__(*args, **data_kwargs)
 
 
@@ -201,7 +218,7 @@ class CustomDataField(CustomFileField):
     field_type = _("Allegato file dati (JSON, CSV, Excel)")
 
     def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = getattr(settings, 'DATA_FILETYPE') if hasattr(settings, 'DATA_FILETYPE') else DATA_FILETYPE
+        self.valid_extensions = DATA_FILETYPE
         super().__init__(*args, **data_kwargs)
 
 
@@ -212,7 +229,7 @@ class CustomPDFField(CustomFileField):
     field_type = _("Allegato PDF")
 
     def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = getattr(settings, 'PDF_FILETYPE') if hasattr(settings, 'PDF_FILETYPE') else PDF_FILETYPE
+        self.valid_extensions = PDF_FILETYPE
         super().__init__(*args, **data_kwargs)
 
 
@@ -255,7 +272,7 @@ class CustomSignedPdfField(CustomSignedFileField):
     fileformat = 'pdf'
 
     def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = getattr(settings, 'PDF_FILETYPE') if hasattr(settings, 'PDF_FILETYPE') else PDF_FILETYPE
+        self.valid_extensions = PDF_FILETYPE
         super().__init__(*args, **data_kwargs)
 
 
@@ -266,7 +283,7 @@ class CustomSignedP7MField(CustomSignedFileField):
     fileformat = 'p7m'
 
     def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = getattr(settings, 'P7M_FILETYPE') if hasattr(settings, 'P7M_FILETYPE') else P7M_FILETYPE
+        self.valid_extensions = P7M_FILETYPE
         super().__init__(*args, **data_kwargs)
 
 
