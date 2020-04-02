@@ -63,10 +63,14 @@ class BaseDynamicForm(forms.Form):
                                                                       field_required=field.required,
                                                                       prefix=name)
                         else:
-                            custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field.__class__.__name__) \
-                                            if hasattr(settings, 'CUSTOM_WIDGETS') else None
-                            if custom_widget:
+                            custom_widget = getattr(settings, 'CUSTOM_WIDGETS', {}).get(field.__class__.__name__)
+                            # Questo consente al widget di essere dichiarato anche come Tipo e non sempre come Stringa
+                            if not custom_widget:
+                                custom_widget = self.fields[name].widget
+                            if isinstance(custom_widget, str):
                                 self.fields[name].widget = import_string(custom_widget)()
+                            else:
+                                self.fields[name].widget = custom_widget
                             if hasattr(field, 'choices'):
                                 self.fields[name].choices = getattr(field, 'choices')
 

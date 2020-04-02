@@ -10,6 +10,7 @@ Now you can build your own form dynamically both in Django backend and frontend,
 in total flexibility and easiness.
 
 Every form can be saved in a configurable storage, in JSON format or simply defined in a Python Dictionary.
+Please see ``django_dynamic_form.dynamic_fields`` to see all the supported type.
 
 
   .. code-block:: python
@@ -24,7 +25,7 @@ Every form can be saved in a configurable storage, in JSON format or simply defi
                    {'label': 'Telefono',
                     'required': True,
                     'help_text': 'Fisso o Mobile',
-                    'pre_text': ''},
+                    'pre_text': ''},            # a text to be rendered before the input field
                    '')),
                  ('Credenziali attive dal',
                   ('BaseDateField',

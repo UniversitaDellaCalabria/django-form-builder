@@ -1,11 +1,28 @@
+import base64
 import re
 
 from django import forms
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from . dynamic_fields import build_formset, CustomCharField
-from . settings import FORMSET_TEMPLATE_NAMEID
+from . captcha import get_captcha
+from . enc import encrypt, decrypt
+from . formsets import build_formset
+
+settings.FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID', 'NNNNN')
+
+
+class CaptchaWidget(forms.Widget):
+    template_name = 'widgets/captcha.html'
+
+    def render(self, name, value, attrs=None, renderer=None):
+        """Render the widget as an HTML string."""
+        context = self.get_context(name, value, attrs)
+        captcha = get_captcha(value)
+        context['image_b64'] = base64.b64encode(captcha.read()).decode()
+        context['widget']['value'] = ''
+        return self._render(self.template_name, context, renderer)
 
 
 class FormsetdWidget(forms.Widget):
@@ -43,13 +60,13 @@ class FormsetdWidget(forms.Widget):
                                 extra=1)
         res = re.sub('{}-0'.format(self.prefix),
                      '{}-{}'.format(self.prefix,
-                                    FORMSET_TEMPLATE_NAMEID),
+                                    settings.FORMSET_TEMPLATE_NAMEID),
                      formset.forms[0].as_table())
         return mark_safe(res)
 
     def render(self, name='', value='', attrs=None, renderer=None):
         context_data = {'formset_id': self.prefix,
-                        'template_generic_id': FORMSET_TEMPLATE_NAMEID,
+                        'template_generic_id': settings.FORMSET_TEMPLATE_NAMEID,
                         'formset': self.formset,
                         'formset_template': self.get_js_template(),
                         'readonly': self.readonly,}

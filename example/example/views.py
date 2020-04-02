@@ -1,11 +1,14 @@
-from django.http import HttpResponse
-
-from django_form_builder.forms import BaseDynamicForm
-from django_form_builder.models import DynamicFieldMap
 from collections import OrderedDict
 
+from django.http import HttpResponse
+from django_form_builder.forms import BaseDynamicForm
+from django_form_builder.models import DynamicFieldMap
+from django.views.decorators.csrf import csrf_exempt
 
-constructor_dict = OrderedDict([('Telefono',
+
+
+constructor_dict = OrderedDict([
+            ('Telefono',
               ('CustomCharField',
                {'label': 'Telefono',
                 'required': True,
@@ -33,23 +36,52 @@ constructor_dict = OrderedDict([('Telefono',
                 'help_text': "Descrizione dell'attività per la quale si richiedono le credenziali",
                 'pre_text': ''},
                '')),
-             ('Richiede che le seguenti anagrafiche vengano attivate',
-              ('CustomComplexTableField',
-               {'label': 'Richiede che le seguenti anagrafiche vengano attivate',
-                'required': True,
-                'help_text': 'inserire almeno first_name, last_name e email',
+             ('CaPTCHA',
+              ('CustomCaptchaField',
+               {'label': 'CaPTCHA',
                 'pre_text': ''},
-               'first_name#last_name#place_of_birth#date_of_birth#codice_fiscale#email#tel#valid_until'))])
+               '')),
+             #('Richiede che le seguenti anagrafiche vengano attivate',
+              #('CustomComplexTableField',
+               #{'label': 'Richiede che le seguenti anagrafiche vengano attivate',
+                #'required': True,
+                #'help_text': 'inserire almeno first_name, last_name e email',
+                #'pre_text': ''},
+               #'first_name#last_name#place_of_birth#date_of_birth#codice_fiscale#email#tel#valid_until'))
+    ]
+)
 
 
+@csrf_exempt
 def dynform(request):
-    form = DynamicFieldMap.get_form(BaseDynamicForm,
-                                constructor_dict=constructor_dict,
-                                custom_params=None,
-                                #data=data,
-                                #files=files,
-                                remove_filefields=False,
-                                remove_datafields=False)
-
     #context = {'form': form}
-    return HttpResponse(form.as_table())
+    page = """<form method=POST>
+                  <table>
+                    {}
+                  </table>
+                  <button type='submit'>Submit</button>
+              </form>
+              """
+
+    if request.method == 'GET':
+        form = DynamicFieldMap.get_form(BaseDynamicForm,
+                                    constructor_dict=constructor_dict,
+                                    custom_params=None,
+                                    #data=data,
+                                    #files=files,
+                                    remove_filefields=False,
+                                    remove_datafields=False)
+        return HttpResponse(page.format(form.as_table()))
+    else:
+        form = DynamicFieldMap.get_form(BaseDynamicForm,
+                                    constructor_dict=constructor_dict,
+                                    custom_params=None,
+                                    data=request.POST,
+                                    files=request.FILES,
+                                    remove_filefields=False,
+                                    remove_datafields=False)
+        
+        if not form.is_valid():
+            return HttpResponse(page.format(form.as_table()))
+        else:
+            return HttpResponse('form is valid')

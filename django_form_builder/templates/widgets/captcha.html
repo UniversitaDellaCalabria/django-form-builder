@@ -1,0 +1,3 @@
+<img class="captcha_dyn_form" src="data:image/png;base64,{{ image_b64 }}" />
+<br>
+<input type="{{ widget.type }}" name="{{ widget.name }}" value="{{ widget.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}>
