@@ -22,7 +22,9 @@ class CaptchaWidget(forms.Widget):
     def render(self, name, value, attrs=None, renderer=None):
         """Render the widget as an HTML string."""
         context = self.get_context(name, value, attrs)
-        captcha = get_captcha(value)
+        # captcha = get_captcha(value)
+        captcha = get_captcha(self.attrs['value'])
+
         context['image_b64'] = base64.b64encode(captcha.read()).decode()
         context['widget']['value'] = ''
         return self._render(self.template_name, context, renderer)
