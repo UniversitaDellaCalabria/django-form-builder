@@ -9,8 +9,11 @@ from django.utils.safestring import mark_safe
 from . captcha import get_captcha
 from . enc import encrypt, decrypt
 from . formsets import build_formset
+from . settings import FORMSET_TEMPLATE_NAMEID
 
-FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID', 'NNNNN')
+
+FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
+                                  FORMSET_TEMPLATE_NAMEID)
 
 
 class CaptchaWidget(forms.Widget):
@@ -23,10 +26,6 @@ class CaptchaWidget(forms.Widget):
         context['image_b64'] = base64.b64encode(captcha.read()).decode()
         context['widget']['value'] = ''
         return self._render(self.template_name, context, renderer)
-
-
-FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
-                                  FORMSET_TEMPLATE_NAMEID)
 
 
 class FormsetdWidget(forms.Widget):
@@ -64,13 +63,13 @@ class FormsetdWidget(forms.Widget):
                                 extra=1)
         res = re.sub('{}-0'.format(self.prefix),
                      '{}-{}'.format(self.prefix,
-                                    settings.FORMSET_TEMPLATE_NAMEID),
+                                    FORMSET_TEMPLATE_NAMEID),
                      formset.forms[0].as_table())
         return mark_safe(res)
 
     def render(self, name='', value='', attrs=None, renderer=None):
         context_data = {'formset_id': self.prefix,
-                        'template_generic_id': settings.FORMSET_TEMPLATE_NAMEID,
+                        'template_generic_id': FORMSET_TEMPLATE_NAMEID,
                         'formset': self.formset,
                         'formset_template': self.get_js_template(),
                         'readonly': self.readonly,}

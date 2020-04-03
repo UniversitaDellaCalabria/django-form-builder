@@ -9,10 +9,10 @@ from django.conf import settings
 
 def get_captcha(text=None):
     fonts = getattr(settings, 'CAPTCHA_FONTS', None)
-    lenght = getattr(settings, 'CAPTCHA_LENGHT', 5)
+    length = getattr(settings, 'CAPTCHA_LENGTH', 5)
     image = ImageCaptcha(fonts=fonts)
-    
-    text = text or ''.join([random.choice(string.ascii_letters+string.hexdigits) for i in range(lenght)])
+
+    text = text or ''.join([random.choice(string.ascii_letters+string.hexdigits) for i in range(length)])
     data = image.generate(text)
     return data
-    
+

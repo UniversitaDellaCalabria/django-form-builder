@@ -47,10 +47,10 @@ PERMITTED_UPLOAD_FILETYPE = getattr(settings,
 WRONG_TYPE = getattr(settings, 'WRONG_TYPE', WRONG_TYPE)
 WRONG_SIZE = getattr(settings, 'WRONG_SIZE', WRONG_SIZE)
 WRONG_LENGHT = getattr(settings, 'WRONG_LENGHT', WRONG_LENGHT)
-IMG_FILETYPE = getattr(settings, 'IMG_FILETYPE', IMG_FILETYPE) 
+IMG_FILETYPE = getattr(settings, 'IMG_FILETYPE', IMG_FILETYPE)
 DATA_FILETYPE = getattr(settings, 'DATA_FILETYPE', DATA_FILETYPE)
 PDF_FILETYPE = getattr(settings, 'PDF_FILETYPE', PDF_FILETYPE)
-P7M_FILETYPE = getattr(settings, 'P7M_FILETYPE', P7M_FILETYPE) 
+P7M_FILETYPE = getattr(settings, 'P7M_FILETYPE', P7M_FILETYPE)
 CLASSIFICATION_LIST = getattr(settings, 'CLASSIFICATION_LIST', CLASSIFICATION_LIST)
 
 
@@ -305,7 +305,7 @@ class TextAreaField(CharField, BaseCustomField):
     TextArea
     """
     field_type = _("Testo lungo")
-    widget = forms.Textarea()
+    widget = forms.Textarea
 
 
 class CheckBoxField(BooleanField, BaseCustomField):
@@ -313,7 +313,7 @@ class CheckBoxField(BooleanField, BaseCustomField):
     BooleanField Checkbox
     """
     field_type = _("Checkbox")
-    widget = forms.CheckboxInput()
+    widget = forms.CheckboxInput
 
 
 class CustomSelectBoxField(CustomChoiceField):
@@ -332,14 +332,14 @@ class CustomRadioBoxField(CustomChoiceField):
     CheckBox multiplo
     """
     field_type = _("Lista di opzioni (checkbox)")
-    widget = forms.RadioSelect()
+    widget = forms.RadioSelect
 
 class BaseDateField(DateField, BaseCustomField):
     """
     DateField
     """
     field_type = _("Data")
-    widget = forms.DateInput()
+    widget = forms.DateInput
     input_formats = settings.DATE_INPUT_FORMATS
 
 
@@ -515,7 +515,7 @@ class _CaptchaField(BaseCustomField):
                          '/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf']
         CAPTCHA_SECRET = '6sa78d6as83$_RDF'
         CAPTCHA_SALT = 'ingoalla'
-        
+
     """
     field_type = _("_Captcha")
     widget = CaptchaWidget
@@ -531,27 +531,27 @@ class CustomCaptchaField(BaseCustomField):
                          '/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf']
         CAPTCHA_SECRET = '6sa78d6as83$_RDF'
         CAPTCHA_SALT = 'ingoalla'
-        
+
     """
     field_type = _("Captcha")
-    
+
     def __init__(self, *args, **kwargs):
         # CaPTCHA
         parent_label = kwargs.get('label')
         self.label = _("{}".format(parent_label))
 
         self.captcha_hidden = CustomHiddenField()
-        self.captcha_hidden.widget = forms.HiddenInput() # perchè devo dichiararlo nuovamente?
+        self.captcha_hidden.widget = forms.HiddenInput # perchè devo dichiararlo nuovamente?
         self.captcha_hidden.label = ''
 
-        lenght = getattr(settings, 'CAPTCHA_LENGHT', 5)
-        text = ''.join([random.choice(string.ascii_letters) for i in range(lenght)])
+        length = getattr(settings, 'CAPTCHA_LENGTH', 5)
+        text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
         value = base64.b64encode(encrypt(text)).decode()
 
         self.captcha_hidden.initial = value
         logger.debug(text, value)
         self.captcha_hidden.define_value = value
-        
+
         self.captcha_hidden.required = True
         self.captcha_hidden.name = "{}_hidden_dyn".format(format_field_name(self.label))
         self.captcha_hidden.parent = self
@@ -568,7 +568,7 @@ class CustomCaptchaField(BaseCustomField):
 
     def get_fields(self):
         return [self.captcha, self.captcha_hidden]
-    
+
     def raise_error(self, name, cleaned_data, **kwargs):
         """
         """
@@ -586,7 +586,7 @@ class CustomCaptchaField(BaseCustomField):
             errors.append(_err_msg)
 
         return errors
-    
+
 class CustomComplexTableField(ChoiceField, BaseCustomField):
     """
     CustomComplexTableField
