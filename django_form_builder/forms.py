@@ -6,7 +6,9 @@ from django.forms.fields import FileField
 from django.template.defaultfilters import filesizeformat
 from django.utils.module_loading import import_string
 
+
 from . import dynamic_fields
+from . dynamic_fields import CaptchaField, CaptchaHiddenField
 from . utils import _split_choices_in_list_canc
 from . widgets import FormsetdWidget
 
@@ -26,7 +28,7 @@ class BaseDynamicForm(forms.Form):
         example:
 
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)        
         self.fields = initial_fields or self.fields
         # Costruzione dinamica dei rimanenti fields del form
         if constructor_dict:
@@ -129,6 +131,14 @@ class BaseDynamicForm(forms.Form):
 
     def clean(self, *args, **kwargs):
         cleaned_data = super().clean()
+
+        self.data = copy.deepcopy(self.data)
+        # CaPTCHA MUST BE ALWAYS RENEWED!
+        for field_name, field_obj in self.fields.items():
+            if type(field_obj) in (CaptchaField, CaptchaHiddenField):
+                self.data[field_name] = self.fields[field_name].widget.attrs['value']
+        # end CAPTCHA
+        
         for fname in self.fields:
             field = self.fields[fname]
             # formset is empty or not valid

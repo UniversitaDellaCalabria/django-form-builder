@@ -506,8 +506,18 @@ class CustomHiddenField(CharField, BaseCustomField):
     def define_value(self, custom_value, **kwargs):
         self.widget = forms.HiddenInput(attrs={'value': custom_value})
 
+class CaptchaHiddenField(CharField, BaseCustomField):
+    """
+    CharField Hidden
+    """
+    field_type = _("Campo nascosto")
+    widget = forms.HiddenInput
 
-class _CaptchaField(BaseCustomField):
+    def define_value(self, custom_value, **kwargs):
+        self.widget = forms.HiddenInput(attrs={'value': custom_value})
+
+
+class CaptchaField(BaseCustomField):
     """
     Captcha
 
@@ -525,7 +535,7 @@ class _CaptchaField(BaseCustomField):
         self.widget = CaptchaWidget(attrs={'value': custom_value})
 
 
-class CustomCaptchaField(BaseCustomField):
+class CustomCaptchaComplexField(BaseCustomField):
     """
     Captcha
 
@@ -542,20 +552,19 @@ class CustomCaptchaField(BaseCustomField):
     def __init__(self, *args, **kwargs):
         # CaPTCHA
         parent_label = kwargs.get('label')
-
-        # self.captcha_hidden = CustomHiddenField()
-        self.captcha_hidden = CustomHiddenField()
+        
+        self.captcha_hidden = CaptchaHiddenField()
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
         text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
         value = base64.b64encode(encrypt(text)).decode()
-        self.captcha_hidden.define_value(value)
+        self.captcha_hidden.define_value(value)        
         logger.debug(text, value)
 
         self.captcha_hidden.required = True
         self.captcha_hidden.name = "{}_hidden_dyn".format(format_field_name(parent_label))
         self.captcha_hidden.parent = self
 
-        self.captcha = _CaptchaField(*args, **kwargs)
+        self.captcha = CaptchaField(*args, **kwargs)
         self.captcha.required = True
         self.captcha.define_value(custom_value=text)
         self.captcha.label = parent_label
@@ -578,6 +587,7 @@ class CustomCaptchaField(BaseCustomField):
             cvalue = decrypt(check).decode()
         except:
             errors.append(_err_msg)
+            
         if value and cvalue.lower() != value.lower():
             errors.append(_err_msg)
         return errors

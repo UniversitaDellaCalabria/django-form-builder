@@ -37,7 +37,7 @@ constructor_dict = OrderedDict([
                 'pre_text': ''},
                '')),
              ('CaPTCHA',
-              ('CustomCaptchaField',
+              ('CustomCaptchaComplexField',
                {'label': 'CaPTCHA',
                 'pre_text': ''},
                '')),
