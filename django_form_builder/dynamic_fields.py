@@ -506,15 +506,12 @@ class CustomHiddenField(CharField, BaseCustomField):
     def define_value(self, custom_value, **kwargs):
         self.widget = forms.HiddenInput(attrs={'value': custom_value})
 
-class CaptchaHiddenField(CharField, BaseCustomField):
-    """
-    CharField Hidden
-    """
-    field_type = _("Campo nascosto")
-    widget = forms.HiddenInput
 
-    def define_value(self, custom_value, **kwargs):
-        self.widget = forms.HiddenInput(attrs={'value': custom_value})
+class CaptchaHiddenField(CustomHiddenField):
+    """
+    Captcha Hidden field
+    """
+    field_type = _("Campo nascosto captcha")
 
 
 class CaptchaField(BaseCustomField):
@@ -532,7 +529,8 @@ class CaptchaField(BaseCustomField):
     widget = CaptchaWidget
 
     def define_value(self, custom_value, **kwargs):
-        self.widget = CaptchaWidget(attrs={'value': custom_value})
+        self.widget = CaptchaWidget(attrs={'value': custom_value,
+                                           'hidden_field': kwargs['hidden_field']})
 
 
 class CustomCaptchaComplexField(BaseCustomField):
@@ -552,21 +550,23 @@ class CustomCaptchaComplexField(BaseCustomField):
     def __init__(self, *args, **kwargs):
         # CaPTCHA
         parent_label = kwargs.get('label')
-        
+
         self.captcha_hidden = CaptchaHiddenField()
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
         text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
         value = base64.b64encode(encrypt(text)).decode()
-        self.captcha_hidden.define_value(value)        
+        self.captcha_hidden.define_value(custom_value=value)
         logger.debug(text, value)
 
         self.captcha_hidden.required = True
         self.captcha_hidden.name = "{}_hidden_dyn".format(format_field_name(parent_label))
         self.captcha_hidden.parent = self
+        self.captcha_hidden.label = ''
 
         self.captcha = CaptchaField(*args, **kwargs)
         self.captcha.required = True
-        self.captcha.define_value(custom_value=text)
+        self.captcha.define_value(custom_value=text,
+                                  hidden_field="id_{}".format(self.captcha_hidden.name))
         self.captcha.label = parent_label
         self.captcha.name = "{}_dyn".format(format_field_name(parent_label))
         self.captcha.help_text = _("CaPTCHA: insert the value represented in the Image")
@@ -587,7 +587,7 @@ class CustomCaptchaComplexField(BaseCustomField):
             cvalue = decrypt(check).decode()
         except:
             errors.append(_err_msg)
-            
+
         if value and cvalue.lower() != value.lower():
             errors.append(_err_msg)
         return errors

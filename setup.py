@@ -37,6 +37,6 @@ setup(
         'django>=2.0,<4.0',
         'filesig>=0.3',
         'cryptography>=2.8',
-        'captcha=0.3'
+        'captcha==0.3'
     ],
 )
