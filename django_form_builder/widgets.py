@@ -27,7 +27,21 @@ class CaptchaWidget(forms.Widget):
 
         context['image_b64'] = base64.b64encode(captcha.read()).decode()
         context['widget']['value'] = ''
-        return self._render(self.template_name, context, renderer)
+        context['widget']['hidden_field'] = self.attrs['hidden_field']
+
+        inline_code = mark_safe(
+            '<script>'
+            'function refresh_captcha(){{'
+                '$.get(location.href, function(data) {{'
+                    '$("#{name}_img").attr("src",($(data).find("#{name}_img").attr("src")));'
+                    '$("#{hidden_field}").val($(data).find("#{hidden_field}").val());'
+                '}});'
+            '}}'
+            '</script>'.format(name=name,
+                               hidden_field=self.attrs['hidden_field'])
+        )
+
+        return self._render(self.template_name, context, renderer) + inline_code
 
 
 class FormsetdWidget(forms.Widget):
