@@ -569,7 +569,7 @@ class CustomCaptchaComplexField(BaseCustomField):
                                   hidden_field="id_{}".format(self.captcha_hidden.name))
         self.captcha.label = parent_label
         self.captcha.name = "{}_dyn".format(format_field_name(parent_label))
-        self.captcha.help_text = _("CaPTCHA: insert the value represented in the Image")
+        self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
         self.captcha.parent = self
         # super().__init__(*args, **kwargs)
 
