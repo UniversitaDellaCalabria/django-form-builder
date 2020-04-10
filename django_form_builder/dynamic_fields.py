@@ -511,7 +511,6 @@ class CaptchaHiddenField(CustomHiddenField):
     """
     Captcha Hidden field
     """
-    field_type = _("Campo nascosto captcha")
 
 
 class CaptchaField(BaseCustomField):
@@ -525,7 +524,6 @@ class CaptchaField(BaseCustomField):
         CAPTCHA_SALT = 'ingoalla'
 
     """
-    field_type = _("_Captcha")
     widget = CaptchaWidget
 
     def define_value(self, custom_value, **kwargs):
