@@ -17,6 +17,7 @@ class BaseDynamicForm(forms.Form):
     def __init__(self,
                  fields_source=dynamic_fields,
                  initial_fields={},
+                 final_fields={},
                  constructor_dict={},
                  custom_params={},
                  ignore_format_field_name=False,
@@ -28,8 +29,11 @@ class BaseDynamicForm(forms.Form):
         example:
 
         """
-        super().__init__(*args, **kwargs)        
+        super().__init__(*args, **kwargs)
+
+        # if initial fields are present
         self.fields = initial_fields or self.fields
+
         # Costruzione dinamica dei rimanenti fields del form
         if constructor_dict:
             constructor_dict = copy.deepcopy(constructor_dict)
@@ -74,6 +78,9 @@ class BaseDynamicForm(forms.Form):
                                 self.fields[name].widget = custom_widget
                             if hasattr(field, 'choices'):
                                 self.fields[name].choices = getattr(field, 'choices')
+
+        # if final fields are present
+        self.fields.update(final_fields)
 
     def remove_not_compiled_fields(self):
         """
@@ -138,7 +145,7 @@ class BaseDynamicForm(forms.Form):
             if type(field_obj) in (CaptchaField, CaptchaHiddenField):
                 self.data[field_name] = self.fields[field_name].widget.attrs['value']
         # end CAPTCHA
-        
+
         for fname in self.fields:
             field = self.fields[fname]
             # formset is empty or not valid

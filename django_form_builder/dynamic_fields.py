@@ -548,6 +548,11 @@ class CustomCaptchaComplexField(BaseCustomField):
     is_complex = True
 
     def __init__(self, *args, **kwargs):
+        # for auto-generated CaPTCHA
+        # you can pass in kwargs captcha_name and captcha_hidden_name
+        captcha_name = kwargs.pop("captcha_name") if kwargs.get("captcha_name") else ""
+        captcha_hidden_name = kwargs.pop("captcha_hidden_name") if kwargs.get("captcha_hidden_name") else ""
+
         # CaPTCHA
         parent_label = kwargs.get('label')
 
@@ -559,7 +564,7 @@ class CustomCaptchaComplexField(BaseCustomField):
         logger.debug(text, value)
 
         self.captcha_hidden.required = True
-        self.captcha_hidden.name = "{}_hidden_dyn".format(format_field_name(parent_label))
+        self.captcha_hidden.name = captcha_hidden_name or "{}_hidden_dyn".format(format_field_name(parent_label))
         self.captcha_hidden.parent = self
         self.captcha_hidden.label = ''
 
@@ -568,10 +573,9 @@ class CustomCaptchaComplexField(BaseCustomField):
         self.captcha.define_value(custom_value=text,
                                   hidden_field="id_{}".format(self.captcha_hidden.name))
         self.captcha.label = parent_label
-        self.captcha.name = "{}_dyn".format(format_field_name(parent_label))
+        self.captcha.name = captcha_name or "{}_dyn".format(format_field_name(parent_label))
         self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
         self.captcha.parent = self
-        # super().__init__(*args, **kwargs)
 
     def get_fields(self):
         return [self.captcha, self.captcha_hidden]
