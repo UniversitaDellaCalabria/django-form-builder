@@ -535,6 +535,7 @@ class CaptchaHiddenField(CustomHiddenField):
     """
     Captcha Hidden field
     """
+    field_type = ""
 
 
 class CaptchaField(BaseCustomField):
