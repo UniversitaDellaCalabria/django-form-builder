@@ -214,10 +214,17 @@ def set_as_dict(obj, modulo_compilato_dict, fields_to_pop=[], indent=False):
     obj.save()
 
 def get_POST_as_json(request, fields_to_pop=[], indent=False):
-    d = {k:v for k,v in request.POST.items()}
+    data = {}
+    for k in request.POST:
+        value_list = request.POST.getlist(k)
+        if len(value_list) > 1:
+            data[k] = value_list
+        else:
+            data[k] = request.POST[k]
+    # data = {k:v for k,v in request.POST.items()}
     for field_name in fields_to_pop:
-        if field_name in d:
-            d.pop(field_name)
-    if "csrfmiddlewaretoken" in d: d.pop("csrfmiddlewaretoken")
-    json_data = json.dumps(d) if not indent else json.dumps(d, indent=2)
+        if field_name in data:
+            data.pop(field_name)
+    if "csrfmiddlewaretoken" in data: data.pop("csrfmiddlewaretoken")
+    json_data = json.dumps(data) if not indent else json.dumps(data, indent=2)
     return json_data

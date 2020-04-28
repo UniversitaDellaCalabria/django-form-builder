@@ -136,6 +136,23 @@ class CustomChoiceField(ChoiceField, BaseCustomField):
         if choices:
             self.choices += _split_choices(choices)
 
+class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
+    """
+    ChoiceField
+    """
+    def __init__(self, *args, **data_kwargs):
+        super().__init__(*args, **data_kwargs)
+        self.choices = []
+
+    def define_value(self, choices, **kwargs):
+        """
+        Se presenti, sostituisce alle opzioni di default
+        quelle di 'custom_value'
+        """
+        # Imposta le 'choices' definite in backend come opzioni
+        if choices:
+            self.choices += _split_choices(choices)
+
 
 class CustomFileField(FileField, BaseCustomField):
     """
@@ -314,6 +331,13 @@ class CheckBoxField(BooleanField, BaseCustomField):
     """
     field_type = _("Checkbox")
     widget = forms.CheckboxInput
+
+class MultiCheckBoxField(CustomMultiChoiceField):
+    """
+    BooleanField Checkbox multi-value
+    """
+    field_type = _("Checkbox multi-valore")
+    widget = forms.CheckboxSelectMultiple
 
 
 class CustomSelectBoxField(CustomChoiceField):
