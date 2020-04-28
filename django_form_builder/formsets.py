@@ -4,6 +4,9 @@ import sys
 from django import forms
 from django.conf import settings
 
+from . utils import _split_choices
+
+
 def get_empty_form(form_class=forms.Form):
     class Dynamic(form_class):
         pass
