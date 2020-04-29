@@ -13,7 +13,7 @@ class DynamicFieldMap(models.Model):
     name = models.CharField(max_length=150,)
     field_type = models.CharField(max_length=100,
                                   choices = get_fields_types())
-    valore = models.TextField(max_length=500,
+    valore = models.TextField(max_length=10000,
                               blank=True,
                               default='',
                               verbose_name='Lista di Valori',
