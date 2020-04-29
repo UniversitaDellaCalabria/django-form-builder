@@ -3,6 +3,7 @@ import re
 import sys
 from django import forms
 from django.conf import settings
+from django.utils.module_loading import import_string
 
 from . utils import _split_choices
 
