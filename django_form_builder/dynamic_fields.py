@@ -151,7 +151,21 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
         """
         # Imposta le 'choices' definite in backend come opzioni
         if choices:
-            self.choices += _split_choices(choices)
+            # se è presente il parametro dopo '#'
+            # indica il max numero di opzioni selezionabili
+            splitted_string = choices.split("#")
+            self.choices += _split_choices(splitted_string[0])
+            self.max_permitted = int(splitted_string[1]) if len(splitted_string)>1 else 0
+
+    def clean(self, *args, **kwargs):
+        args = args if isinstance(args[0], list) else ([args[0]],)
+        return super().clean(*args, **kwargs)
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        errors = []
+        if cleaned_data and self.max_permitted>0 and len(cleaned_data)>self.max_permitted:
+            errors.append(_("Numero massimo di scelte consentito: {}").format(self.max_permitted))
+        return errors
 
 
 class CustomFileField(FileField, BaseCustomField):
