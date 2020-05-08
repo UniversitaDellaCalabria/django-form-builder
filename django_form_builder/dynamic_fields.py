@@ -611,7 +611,8 @@ class CustomCaptchaComplexField(BaseCustomField):
                                   hidden_field="id_{}".format(self.captcha_hidden.name))
         self.captcha.label = parent_label
         self.captcha.name = captcha_name or "{}_dyn".format(format_field_name(parent_label))
-        self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
+        # this should be taken from constructore dict
+        #self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
         self.captcha.parent = self
 
     def get_fields(self):
