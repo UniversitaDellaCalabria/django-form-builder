@@ -38,17 +38,31 @@ class BaseDynamicForm(forms.Form):
         if constructor_dict:
             constructor_dict = copy.deepcopy(constructor_dict)
             for key, value in constructor_dict.items():
+
+                # descrizione qui
                 if ignore_format_field_name:
                     field_id = key
                 else:
                     field_id = dynamic_fields.format_field_name(key)
+
+                # default contructor data
                 data_kwargs = {'label': key.title()}
+
+                # descrizioni qui
                 custom_field_name = value[0]
+                # {'label': '', 'help_text': '', 'pre_text': ''}
                 custom_field_dict = value[1]
-                pre_text = custom_field_dict.pop('pre_text')
                 custom_field_values = value[2]
+
+                # questa parte del pop va rifattorizzata
+                pre_text = ''
+                if 'pre_text' in custom_field_dict.keys():
+                    pre_text = custom_field_dict.pop('pre_text')
+                
                 # add custom attrs
                 data_kwargs.update(custom_field_dict)
+
+                # qui specializzare delle funzioni 
                 custom_field = None
                 if hasattr(fields_source, custom_field_name):
                     custom_field = getattr(fields_source,
@@ -56,10 +70,15 @@ class BaseDynamicForm(forms.Form):
                 if custom_field:
                     custom_field.define_value(custom_field_values, **custom_params)
                     fields = custom_field.get_fields()
+
+                    # spiegare la logica di decorazione qui
                     for field in fields:
                         name = getattr(field, 'name') if hasattr(field, 'name') else field_id
                         self.fields[name]= field
-                        self.fields[name].pre_text = pre_text
+
+                        if pre_text:
+                            self.fields[name].pre_text = pre_text
+
                         if isinstance(field,
                                       dynamic_fields.CustomComplexTableField):
                             choices = _split_choices_in_list_canc(custom_field_values)
