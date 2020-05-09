@@ -625,6 +625,7 @@ class CustomCaptchaComplexField(BaseCustomField):
         errors = []
         value = cleaned_data.get(self.captcha.name)
         check = cleaned_data.get(self.captcha_hidden.name)
+        cvalue = ''
         try:
             cvalue = decrypt(check).decode()
         except:
