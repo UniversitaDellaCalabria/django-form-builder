@@ -9,7 +9,7 @@
             text-align: left;
             color: red;
         }
-    
+
 </style>
 
 <div>
@@ -17,14 +17,14 @@
          id="{{ widget.name }}_img"
          src="data:image/png;base64,{{ image_b64 }}" />
     <br>
-    <button class="mt-1" onclick="refresh_captcha_{{ widget.unique_id }}();" />
+    <button type="button" class="mt-1" onclick="refresh_captcha_{{ widget.unique_id }}();" />
         {% trans 'Aggiorna Immagine' %}
     </button>
 </div>
 <br>
 <input placeholder="{% trans 'Insert CaPTCHA here' %}"
        style="width: 176px;"
-       type="{{ widget.type }}"
+       type="text"
        name="{{ widget.name }}"
        value="{{ widget.value | stringformat:'s' }}"
        {% include "django/forms/widgets/attrs.html" %}>
