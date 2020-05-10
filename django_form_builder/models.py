@@ -2,10 +2,12 @@ import json
 
 from collections import OrderedDict
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from . dynamic_fields import get_fields_types
 from . forms import BaseDynamicForm
 from . utils import get_as_dict
+
 
 class DynamicFieldMap(models.Model):
     """
@@ -16,14 +18,14 @@ class DynamicFieldMap(models.Model):
     valore = models.TextField(max_length=20000,
                               blank=True,
                               default='',
-                              verbose_name='Lista di Valori',
-                              help_text="Viene considerato solo se si sceglie"
-                                        " 'Menu a tendina' oppure 'Serie di Opzioni'."
-                                        " (Es: valore1;valore2;valore3...)")
+                              verbose_name=_('Lista di Valori'),
+                              help_text=_("Viene considerato solo se si sceglie"
+                                          " 'Menu a tendina' oppure 'Serie di Opzioni'."
+                                          " (Es: valore1;valore2;valore3...)"))
     is_required = models.BooleanField(default=True)
     aiuto = models.CharField(max_length=254, blank=True, default='')
     pre_text = models.TextField(blank=True, default='')
-    ordinamento = models.PositiveIntegerField(help_text="posizione nell'ordinamento",
+    ordinamento = models.PositiveIntegerField(help_text=_("posizione nell'ordinamento"),
                                               blank=True,
                                               default=0)
 
@@ -38,7 +40,7 @@ class DynamicFieldMap(models.Model):
             d = {'label': field.name,
                  'required' : field.is_required,
                  'help_text' : field.aiuto,
-                 'pre_text': field.pre_text}
+                 'pre_text': getattr(field, 'pre_text', '')}
             constructor_dict[field.name] = (field.field_type,
                                             d,
                                             field.valore)

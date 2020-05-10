@@ -27,16 +27,20 @@ from . utils import (_split_choices,
                      _split_choices_in_list_canc,
                      _successivo_ad_oggi)
 
-
-try:
-    from filesig.filesig import get_signatures
-except:
-    from filesig import get_signatures
-
-
 logger = logging.getLogger(__name__)
 
+get_signatures = None
+try:
+    from filesig.filesig import get_signatures
+except Exception as e:
+    logger.error('Error: {}'.format(e))
 
+if not get_signatures:
+    try:
+        from filesig import get_signatures
+    except Exception as e:
+        logger.error('Error: {}'.format(e))
+    
 
 MAX_UPLOAD_SIZE = getattr(settings, 'MAX_UPLOAD_SIZE', MAX_UPLOAD_SIZE)
 ATTACH_NAME_MAX_LEN = getattr(settings, 'ATTACH_NAME_MAX_LEN',
@@ -250,9 +254,10 @@ class CustomSignedFileField(CustomFileField):
     def get_cleaned_signature_params(self, data):
         res = self.get_signature_params(data)
         details = {}
-        details['Signature Validation'] = res[-1].get('Signature Validation')
-        details['Signing Time'] = res[-1].get('Signing Time')
-        details['Signer full Distinguished Name'] = res[-1].get('Signer full Distinguished Name')
+        if res:
+            details['Signature Validation'] = res[-1].get('Signature Validation')
+            details['Signing Time'] = res[-1].get('Signing Time')
+            details['Signer full Distinguished Name'] = res[-1].get('Signer full Distinguished Name')
         return details
 
     def raise_error(self, name, cleaned_data, **kwargs):
@@ -272,10 +277,10 @@ class CustomSignedPdfField(CustomSignedFileField):
     """
     field_type = _("Allegato PDF firmato")
     fileformat = 'pdf'
-
-    def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = PDF_FILETYPE
-        super().__init__(*args, **data_kwargs)
+    valid_extensions = PDF_FILETYPE
+    
+    #def __init__(self, *args, **data_kwargs):
+        #super().__init__(*args, **data_kwargs)
 
 
 class CustomSignedP7MField(CustomSignedFileField):
@@ -283,10 +288,10 @@ class CustomSignedP7MField(CustomSignedFileField):
     """
     field_type = _("Allegato P7M firmato")
     fileformat = 'p7m'
-
-    def __init__(self, *args, **data_kwargs):
-        self.valid_extensions = P7M_FILETYPE
-        super().__init__(*args, **data_kwargs)
+    valid_extensions = P7M_FILETYPE
+    
+    #def __init__(self, *args, **data_kwargs):
+        #super().__init__(*args, **data_kwargs)
 
 
 class PositiveIntegerField(DecimalField, BaseCustomField):
