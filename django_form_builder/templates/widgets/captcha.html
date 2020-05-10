@@ -1,13 +1,30 @@
 {% load i18n %}
 
+<style>
+    .nonfield {
+            display:none;
+        }
+
+    .errorlist {
+            text-align: left;
+            color: red;
+        }
+    
+</style>
+
 <div>
-    <img class="captcha_dyn_form"
+    <img class="captcha_dyn_form" style="border: 1px grey dotted; padding: 5px;"
          id="{{ widget.name }}_img"
          src="data:image/png;base64,{{ image_b64 }}" />
-    <a onclick="refresh_captcha_{{ widget.unique_id }}();">{% trans "Aggiorna" %}</a>
+    <br>
+    <button class="mt-1" onclick="refresh_captcha_{{ widget.unique_id }}();" />
+        {% trans 'Aggiorna Immagine' %}
+    </button>
 </div>
 <br>
-<input type="{{ widget.type }}"
+<input placeholder="{% trans 'Insert CaPTCHA here' %}"
+       style="width: 176px;"
+       type="{{ widget.type }}"
        name="{{ widget.name }}"
        value="{{ widget.value | stringformat:'s' }}"
        {% include "django/forms/widgets/attrs.html" %}>
