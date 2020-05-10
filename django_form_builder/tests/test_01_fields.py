@@ -115,42 +115,42 @@ class TestInvalidFields(BaseTest):
         logger.info("Test valid CustomFileField")
         assert form.is_valid()
 
-    #def test_signed_pdf(self):
-        #"""
-        #Test valid value in PositiveIntegerField
-        #"""
-        #name = 'test_signed.pdf'
-        #file_obj = self.get_file(name)
-        #form = self.single_field_form('CustomSignedPdfField',
-                                      #file_value=file_obj)
-        #logger.info("Test valid CustomSignedPdfField")
-        #assert form.is_valid()
+    # def test_signed_pdf(self):
+        # """
+        # Test valid value in PositiveIntegerField
+        # """
+        # name = 'test_signed.pdf'
+        # file_obj = self.get_file(name)
+        # form = self.single_field_form('CustomSignedPdfField',
+                                      # file_value=file_obj)
+        # logger.info("Test valid CustomSignedPdfField")
+        # assert form.is_valid()
 
-    #def test_signed_pdf_show_details(self):
-        #"""
-        #Test valid value in PositiveIntegerField
-        #"""
-        #name = 'test_signed.pdf'
-        #file_obj = self.get_file(name)
-        #field = self.create_field('CustomSignedPdfField')[0]
-        #field_id = dynamic_fields.format_field_name(field.label)
-        #initial_fields = {field_id: field}
-        #files = {field_id: file_obj}
-        #form = self.get_baseform(initial_fields=initial_fields,
-                                 #files=files)
-        #logger.info("Test valid PDF signed file (sign details)")
-        #logger.info(get_attachment_sign_details(form,
-                                                #self.get_filepath(),
-                                                #field_id,
-                                                #name))
-        #assert form.is_valid()
+    # def test_signed_pdf_show_details(self):
+        # """
+        # Test valid value in PositiveIntegerField
+        # """
+        # name = 'test_signed.pdf'
+        # file_obj = self.get_file(name)
+        # field = self.create_field('CustomSignedPdfField')[0]
+        # field_id = dynamic_fields.format_field_name(field.label)
+        # initial_fields = {field_id: field}
+        # files = {field_id: file_obj}
+        # form = self.get_baseform(initial_fields=initial_fields,
+                                 # files=files)
+        # logger.info("Test valid PDF signed file (sign details)")
+        # logger.info(get_attachment_sign_details(form,
+                                                # self.get_filepath(),
+                                                # field_id,
+                                                # name))
+        # assert form.is_valid()
 
-    #def test_signed_p7m(self):
-        #"""
-        #Test valid value in PositiveIntegerField
-        #"""
-        #name = 'test_signed.pdf.p7m'
-        #file_obj = self.get_file(name, content_type='application/pkcs7-mime')
-        #form = self.single_field_form('CustomSignedP7MField', file_value=file_obj)
-        #logger.info("Test valid CustomSignedP7MField")
-        #assert form.is_valid()
+    # def test_signed_p7m(self):
+        # """
+        # Test valid value in PositiveIntegerField
+        # """
+        # name = 'test_signed.pdf.p7m'
+        # file_obj = self.get_file(name, content_type='application/pkcs7-mime')
+        # form = self.single_field_form('CustomSignedP7MField', file_value=file_obj)
+        # logger.info("Test valid CustomSignedP7MField")
+        # assert form.is_valid()
