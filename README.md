@@ -51,7 +51,12 @@ Tests
 -----
 
 ````
-# build a virtualend where to install all the requirements ...
+# build a virtualend where to install all the requirements and requirements-dev ...
 cd example
 ./manage.py test
+
+# coverage
+coverage erase
+coverage run  ./manage.py test
+coverage report -m
 ````
