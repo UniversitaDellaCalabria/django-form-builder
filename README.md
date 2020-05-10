@@ -1,3 +1,8 @@
+![Build status](https://travis-ci.org/UniversitaDellaCalabria/django-form-builder.svg?branch=master)
+![Python version](https://img.shields.io/badge/license-Apache%202-blue.svg)
+![License](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-blue.svg)
+
+
 Django Form Builder
 -------------------
 
@@ -40,3 +45,13 @@ Example of a dynamic form JSON in database
   }
 }
 ```
+
+
+Tests
+-----
+
+````
+# build a virtualend where to install all the requirements ...
+cd example
+./manage.py test
+````
