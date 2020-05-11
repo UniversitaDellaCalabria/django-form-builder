@@ -20,6 +20,10 @@
     <button type="button" class="mt-1" onclick="refresh_captcha_{{ widget.unique_id }}();" />
         {% trans 'Aggiorna Immagine' %}
     </button>
+
+    <audio id="{{ widget.name }}_wav" controls
+           src="data:audio/wav;base64,{{ audio_b64 }}"
+           style="width: 170px; margin-top: 15px;"/>
 </div>
 <br>
 <input placeholder="{% trans 'Insert CaPTCHA here' %}"

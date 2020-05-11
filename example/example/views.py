@@ -55,12 +55,23 @@ constructor_dict = OrderedDict([
 @csrf_exempt
 def dynform(request):
     #context = {'form': form}
-    page = """<form method=POST>
+    page = """<!DOCTYPE html>
+            <html lang="it">
+              <head>
+              <script
+              src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+              integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+              crossorigin="anonymous"></script>
+              </head>
+              <body>
+              <form method=POST>
                   <table>
                     {}
                   </table>
                   <button type='submit'>Submit</button>
               </form>
+              </body>
+            </html>
               """
 
     if request.method == 'GET':
@@ -80,7 +91,7 @@ def dynform(request):
                                     files=request.FILES,
                                     remove_filefields=False,
                                     remove_datafields=False)
-        
+
         if not form.is_valid():
             return HttpResponse(page.format(form.as_table()))
         else:

@@ -27,7 +27,7 @@ Features
 - Create input fields using heritable classes, with customizable validation methods;
 - Manage [Django Formset](https://docs.djangoproject.com/en/2.2/topics/forms/formsets/) fields, with form insertion and removal via javascript;
 - Manage and verify digitally signed file fields (PDF and P7M) without a certification authority validation (TODO via third-party API).
-
+- Audio and Image Captcha
 
 Examples
 --------

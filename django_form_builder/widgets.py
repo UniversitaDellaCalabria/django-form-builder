@@ -23,20 +23,25 @@ class CaptchaWidget(forms.Widget):
         """Render the widget as an HTML string."""
         context = self.get_context(name, value, attrs)
         # captcha = get_captcha(value)
-        captcha = get_captcha(self.attrs['value'])
+        captcha_img, captcha_wav = get_captcha(self.attrs['value'])
         # javascript functions don't allow "-" char
         unique_id = name.replace("-", "_")
 
-        context['image_b64'] = base64.b64encode(captcha.read()).decode()
+        # image
+        context['image_b64'] = base64.b64encode(captcha_img.read()).decode()
         context['widget']['value'] = ''
         context['widget']['hidden_field'] = self.attrs['hidden_field']
         context['widget']['unique_id'] = unique_id
+
+        # audio
+        context['audio_b64'] = base64.b64encode(captcha_wav).decode()
 
         inline_code = mark_safe(
             '<script>'
             'function refresh_captcha_{unique_id}(){{'
                 '$.get(location.href, function(data) {{'
                     '$("#{name}_img").attr("src",($(data).find("#{name}_img").attr("src")));'
+                    '$("#{name}_wav").attr("src",($(data).find("#{name}_wav").attr("src")));'
                     '$("#{hidden_field}").val($(data).find("#{hidden_field}").val());'
                 '}});'
             '}}'

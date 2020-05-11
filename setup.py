@@ -14,6 +14,7 @@ setup(
     name='django-form-builder',
     version='0.9.14',
     packages=find_packages(),
+    package_data={'': ['*.wav']},
     include_package_data=True,
     license='BSD License',
     description="Django Form builder",
