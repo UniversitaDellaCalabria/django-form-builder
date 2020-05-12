@@ -32,9 +32,11 @@ def build_formset(choices, extra=0, required=False, prefix='form', data=None):
                 field_dict = ast.literal_eval(coldict)
                 field_type_name = field_dict['type']
                 del field_dict['type']
-                custom_field = getattr(sys.modules[__package__ + '.dynamic_fields'], field_type_name)(**field_dict) \
-                               if hasattr(sys.modules[__package__ + '.dynamic_fields'], field_type_name) \
-                               else getattr(sys.modules[__package__ + '.dynamic_fields'], 'CustomCharField')
+                mod_name = __package__ + '.dynamic_fields'
+                sysmod = sys.modules[mod_name]
+                custom_field = getattr(sysmod, field_type_name)(**field_dict) \
+                               if hasattr(sysmod, field_type_name) \
+                               else getattr(sysmod, 'CustomCharField')
                 custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field_type_name) \
                                 if hasattr(settings, 'CUSTOM_WIDGETS') else None
                 if custom_widget:

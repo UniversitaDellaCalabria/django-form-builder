@@ -40,7 +40,7 @@ if not get_signatures:
         from filesig import get_signatures
     except Exception as e:
         logger.error('Error: {}'.format(e))
-    
+
 
 MAX_UPLOAD_SIZE = getattr(settings, 'MAX_UPLOAD_SIZE', MAX_UPLOAD_SIZE)
 ATTACH_NAME_MAX_LEN = getattr(settings, 'ATTACH_NAME_MAX_LEN',
@@ -278,7 +278,7 @@ class CustomSignedPdfField(CustomSignedFileField):
     field_type = _("Allegato PDF firmato")
     fileformat = 'pdf'
     valid_extensions = PDF_FILETYPE
-    
+
     #def __init__(self, *args, **data_kwargs):
         #super().__init__(*args, **data_kwargs)
 
@@ -289,7 +289,7 @@ class CustomSignedP7MField(CustomSignedFileField):
     field_type = _("Allegato P7M firmato")
     fileformat = 'p7m'
     valid_extensions = P7M_FILETYPE
-    
+
     #def __init__(self, *args, **data_kwargs):
         #super().__init__(*args, **data_kwargs)
 
@@ -572,10 +572,11 @@ class CaptchaField(BaseCustomField):
 
     def define_value(self, custom_value, **kwargs):
         self.widget = CaptchaWidget(attrs={'value': custom_value,
-                                           'hidden_field': kwargs['hidden_field']})
+                                           'hidden_field': kwargs.get('hidden_field', ''),
+                                           'lang': kwargs.get('lang', 'en')})
 
 
-class CustomCaptchaComplexField(BaseCustomField):
+class CustomCaptchaComplexField(CaptchaField):
     """
     Captcha
 
@@ -610,10 +611,17 @@ class CustomCaptchaComplexField(BaseCustomField):
         self.captcha_hidden.parent = self
         self.captcha_hidden.label = ''
 
+        # TODO
+        # questo perchè viene nel constructor dict mentre dovrebbe venire nel custom_params ...
+        lang = 'en'
+        if kwargs.get('lang'):
+            lang = kwargs.pop('lang')
+
         self.captcha = CaptchaField(*args, **kwargs)
         self.captcha.required = True
         self.captcha.define_value(custom_value=text,
-                                  hidden_field="id_{}".format(self.captcha_hidden.name))
+                                  hidden_field="id_{}".format(self.captcha_hidden.name),
+                                  lang=lang)
         self.captcha.label = parent_label
         self.captcha.name = captcha_name or "{}_dyn".format(format_field_name(parent_label))
         # this should be taken from constructore dict

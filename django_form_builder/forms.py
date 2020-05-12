@@ -47,7 +47,6 @@ class BaseDynamicForm(forms.Form):
 
                 # default contructor data
                 data_kwargs = {'label': key.title()}
-
                 # descrizioni qui
                 custom_field_name = value[0]
                 # {'label': '', 'help_text': '', 'pre_text': ''}
@@ -58,11 +57,10 @@ class BaseDynamicForm(forms.Form):
                 pre_text = ''
                 if 'pre_text' in custom_field_dict.keys():
                     pre_text = custom_field_dict.pop('pre_text')
-                
+
                 # add custom attrs
                 data_kwargs.update(custom_field_dict)
-
-                # qui specializzare delle funzioni 
+                # qui specializzare delle funzioni
                 custom_field = None
                 if hasattr(fields_source, custom_field_name):
                     custom_field = getattr(fields_source,

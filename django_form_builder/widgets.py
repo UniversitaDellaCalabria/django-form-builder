@@ -23,7 +23,8 @@ class CaptchaWidget(forms.Widget):
         """Render the widget as an HTML string."""
         context = self.get_context(name, value, attrs)
         # captcha = get_captcha(value)
-        captcha_img, captcha_wav = get_captcha(self.attrs['value'])
+        captcha_img, captcha_wav = get_captcha(self.attrs['value'],
+                                               self.attrs.get('lang', 'en'))
         # javascript functions don't allow "-" char
         unique_id = name.replace("-", "_")
 
