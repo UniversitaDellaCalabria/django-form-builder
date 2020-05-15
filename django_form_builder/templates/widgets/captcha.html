@@ -4,31 +4,43 @@
     .nonfield {
             display:none;
         }
-
     .errorlist {
             text-align: left;
             color: red;
         }
-
 </style>
 
-<div>
-    <img class="captcha_dyn_form" style="border: 1px grey dotted; padding: 5px;"
-         id="{{ widget.name }}_img"
-         src="data:image/png;base64,{{ image_b64 }}" />
-    <br>
-    <button type="button" class="mt-1" onclick="refresh_captcha_{{ widget.unique_id }}();" />
-        {% trans 'Aggiorna Immagine' %}
-    </button>
+<div class="container">
+      <div class="row">
 
-    <audio id="{{ widget.name }}_wav" controls
+        <div class="col-sx">
+         <img class="captcha_dyn_form mt-1 p-2" style="border: 1px grey dotted;"
+              id="{{ widget.name }}_img"
+              src="data:image/png;base64,{{ image_b64 }}" />
+        </div>
+
+        <div class="col-sx">
+            <button type="button" class="btn btn-primary btn-block mt-1 ml-1 py-1 px-0"
+                    onclick="refresh_captcha_{{ widget.unique_id }}();" />
+                <svg class="icon icon-white icon-xs">
+                    <use xlink:href="/static/svg/sprite.svg#it-refresh"></use>
+                </svg>
+            </button>
+
+          <audio id="{{ widget.name }}_wav" controls
            src="data:audio/wav;base64,{{ audio_b64 }}"
-           style="width: 170px; margin-top: 15px;"/>
-</div>
-<br>
-<input placeholder="{% trans 'Insert CaPTCHA here' %}"
-       style="width: 176px;"
+           style="width: 80px;" class="mt-1 ml-1" />
+        </div>
+    </div>
+
+    <div class="text-left">
+      <input placeholder="{% trans 'Insert CaPTCHA here' %}"
+       style="width: 172px;"
        type="text"
+       class="p-1"
        name="{{ widget.name }}"
        value="{{ widget.value | stringformat:'s' }}"
        {% include "django/forms/widgets/attrs.html" %}>
+    </div>
+
+</div>
