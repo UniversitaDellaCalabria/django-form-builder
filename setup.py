@@ -1,4 +1,5 @@
 import os
+from glob import glob
 from setuptools import find_packages, setup
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
@@ -7,17 +8,18 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-# python3 setup.py sdist
-# python3 -m twine upload
+#  rm -R build/ dist/ *egg-info
+#  python3 setup.py sdist
+#  twine upload dist/*
 
 setup(
     name='django-form-builder',
-    version='0.9.16-1',
+    version='0.9.16-4',
     packages=find_packages(),
     package_data={'': ['*.wav']},
     data_files=[
-        ('data',['*.wav']),
-    ]
+        ('', glob('django_form_builder/data/audio_captcha/*/default.wav', recursive=True)),
+    ],
     include_package_data=True,
     license='BSD License',
     description="Django Form builder",

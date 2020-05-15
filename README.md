@@ -60,3 +60,13 @@ coverage erase
 coverage run  ./manage.py test
 coverage report -m
 ````
+
+
+Build
+-----
+
+````
+rm -R build/ dist/ *egg-info
+python3 setup.py sdist
+twine upload dist/*
+````

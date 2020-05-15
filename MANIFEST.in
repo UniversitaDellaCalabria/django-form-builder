@@ -5,3 +5,4 @@ include django_form_builder/static/js/*
 include django_form_builder/templates/examples/*
 include django_form_builder/templates/widgets/*
 include django_form_builder/templatetags/*
+include django_form_builder/data/audio_captcha/*/*/default.wav
