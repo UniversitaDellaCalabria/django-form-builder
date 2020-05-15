@@ -8,8 +8,8 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from django.conf import settings
 
 
-_secret = getattr(settings, 'ENCRYPTION_SECRET', b'secret')
-_salt = getattr(settings, 'ENCRYPTION_SALT', b'salt')
+_secret = getattr(settings, 'CAPTCHA_SECRET', b'secret')
+_salt = getattr(settings, 'CAPTCHA_SALT', b'salt')
 _kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),
                   length=32,
                   salt=_salt,

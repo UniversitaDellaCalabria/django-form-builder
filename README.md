@@ -46,6 +46,15 @@ Example of a dynamic form JSON in database
 }
 ```
 
+CaPTCHA
+-------
+
+In `settings.py` configure these parameters
+
+````
+CAPTCHA_SECRET = b'your_secret'
+CAPTCHA_SALT = b'your_salt'
+````
 
 Tests
 -----
