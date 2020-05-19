@@ -80,28 +80,31 @@ def format_field_name(field_name, lower=True):
 
 class BaseCustomField(Field):
     """
-    Classe Base che definisce i metodi per ogni CustomField
+    Base Class that defines methods for every field
     """
+
+    # is a complex field
     is_complex = False
+    # is a formset
     is_formset = False
 
     def define_value(self, custom_value=None, **kwargs):
         """
-        Integra la costruzione del field con informazioni aggiuntive
-        provenienti dai parametri di configurazione definiti dall'utente
+        Integrates fields building with more data coming from user
+        configuration params
         """
         return
 
     def get_fields(self):
         """
-        Se è un field semplice, torna se stesso.
-        Se è un field composto, torna una lista di fields.
+        If field isn't complex, it returns a single element list with self.
+        Else it returns a child fields list
         """
         return [self]
 
     def raise_error(self, name, cleaned_data, **kwargs):
         """
-        Torna la lista degli errori generati dalla validazione del field
+        Returns field validation errors list
         """
         return []
 
@@ -111,9 +114,6 @@ class CustomCharField(CharField, BaseCustomField):
     CharField
     """
     field_type = _("Testo")
-
-    def __init__(self, *args, **data_kwargs):
-        super().__init__(*args, **data_kwargs)
 
 
 class CustomEmailField(EmailField, BaseCustomField):
@@ -133,11 +133,10 @@ class CustomChoiceField(ChoiceField, BaseCustomField):
 
     def define_value(self, choices, **kwargs):
         """
-        Se presenti, sostituisce alle opzioni di default
-        quelle di 'custom_value'
+        Set field choices (if present)
         """
-        # Imposta le 'choices' definite in backend come opzioni
         if choices:
+            # split string into separate choices
             self.choices += _split_choices(choices)
 
 class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
@@ -150,16 +149,15 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
 
     def define_value(self, choices, **kwargs):
         """
-        Se presenti, sostituisce alle opzioni di default
-        quelle di 'custom_value'
+        Set field choices (if present)
         """
-        # Imposta le 'choices' definite in backend come opzioni
         if choices:
-            # se è presente il parametro dopo '#'
-            # indica il max numero di opzioni selezionabili
+            # if there is a '#' parameter at the end of the string (...#3)
+            # defines the maximum number of selectable options
             splitted_string = choices.split("#")
-            self.choices += _split_choices(splitted_string[0])
             self.max_permitted = int(splitted_string[1]) if len(splitted_string)>1 else 0
+            # split string into separate choices
+            self.choices += _split_choices(splitted_string[0])
 
     def clean(self, *args, **kwargs):
         args = args if isinstance(args[0], list) else ([args[0]],)
@@ -186,7 +184,7 @@ class CustomFileField(FileField, BaseCustomField):
         errors = []
         if data:
             msg = ''
-            self_valid_extensions = getattr(self, 'valid_extensions') if hasattr(self, 'valid_extensions') else None
+            self_valid_extensions = getattr(self, 'valid_extensions', None)
             settings_upload_filetype = PERMITTED_UPLOAD_FILETYPE
             permitted_upload_filetype = self_valid_extensions or settings_upload_filetype
             max_upload_size = MAX_UPLOAD_SIZE
@@ -279,9 +277,6 @@ class CustomSignedPdfField(CustomSignedFileField):
     fileformat = 'pdf'
     valid_extensions = PDF_FILETYPE
 
-    #def __init__(self, *args, **data_kwargs):
-        #super().__init__(*args, **data_kwargs)
-
 
 class CustomSignedP7MField(CustomSignedFileField):
     """
@@ -290,13 +285,10 @@ class CustomSignedP7MField(CustomSignedFileField):
     fileformat = 'p7m'
     valid_extensions = P7M_FILETYPE
 
-    #def __init__(self, *args, **data_kwargs):
-        #super().__init__(*args, **data_kwargs)
-
 
 class PositiveIntegerField(DecimalField, BaseCustomField):
     """
-    Int DecimalField positivo
+    Positive integer DecimalField
     """
     field_type = _("Numero intero positivo")
     default_validators = [MinValueValidator(0)]
@@ -307,17 +299,15 @@ class PositiveIntegerField(DecimalField, BaseCustomField):
         super().__init__(*args, **data_kwargs)
 
     def raise_error(self, name, cleaned_data, **kwargs):
-        """
-        Solo numeri (espressioni del tipo 16e50 non sono ammesse)
-        """
         if not cleaned_data: return []
+        # Only numbers (expressions like 16e50 aren't permitted)
         if not re.match('^[0-9]+$', str(cleaned_data)):
             return [_("Solo numeri ammessi"),]
 
 
 class PositiveFloatField(DecimalField, BaseCustomField):
     """
-    Float DecimalField positivo
+    Positive float DecimalField
     """
     field_type = _("Numero con virgola positivo")
     default_validators = [MinValueValidator(0)]
@@ -328,10 +318,8 @@ class PositiveFloatField(DecimalField, BaseCustomField):
         super().__init__(*args, **data_kwargs)
 
     def raise_error(self, name, cleaned_data, **kwargs):
-        """
-        Solo numeri (espressioni del tipo 16e50 non sono ammesse)
-        """
         if not cleaned_data: return []
+        # Only numbers (expressions like 16e50 aren't permitted)
         if not re.match('^[0-9]+\.?[0-9]?$', str(cleaned_data)):
             return [_("Solo numeri ammessi"),]
 
@@ -372,7 +360,7 @@ class CustomSelectBoxField(CustomChoiceField):
 
 class CustomRadioBoxField(CustomChoiceField):
     """
-    CheckBox multiplo
+    RadioBox
     """
     field_type = _("Lista di opzioni (checkbox)")
     widget = forms.RadioSelect
@@ -394,13 +382,13 @@ class BaseDateTimeField(BaseCustomField):
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
-        # Data DateField
+        # Date DateField
         self.data = BaseDateField(*args, **data_kwargs)
         self.data.label = _("{} (Data)").format(data_kwargs.get('label'))
         self.data.name = "{}_dyn".format(format_field_name(self.data.label))
         self.data.parent = self
 
-        # Ore SelectBox
+        # Hour SelectBox
         self.hour = CustomSelectBoxField(*args, **data_kwargs)
         self.hour.label = _("{} (Ore)").format(data_kwargs.get('label'))
         self.hour.name = "{}_dyn".format(format_field_name(self.hour.label))
@@ -408,7 +396,7 @@ class BaseDateTimeField(BaseCustomField):
         self.hour.initial = 0
         self.hour.parent = self
 
-        # Minuti SelectBox
+        # Minutes SelectBox
         self.minute = CustomSelectBoxField(*args, **data_kwargs)
         self.minute.label = _("{} (Minuti)").format(data_kwargs.get('label'))
         self.minute.name = "{}_dyn".format(format_field_name(self.minute.label))
@@ -422,7 +410,7 @@ class BaseDateTimeField(BaseCustomField):
 
 class DateStartEndComplexField(BaseCustomField):
     """
-    Field composto da DataInizio (DateField) e DataFine (DateField)
+    Field composed by StartDate (DateField) and EndDate (DateField)
     """
     field_type = _("Data inizio e Data fine")
     is_complex = True
@@ -430,22 +418,22 @@ class DateStartEndComplexField(BaseCustomField):
     def __init__(self, *args, **data_kwargs):
         parent_label = data_kwargs.get('label')
 
-        # Data Inizio
+        # Start date
         self.start = BaseDateField(*args, **data_kwargs)
         self.start.required = data_kwargs.get('required')
         self.start.label = _("{} (Data inizio)").format(parent_label)
         self.start.name = "{}_dyn".format(format_field_name(self.start.label))
 
-        # Riferimento a DateStartEndComplexField
+        # Set child parent
         self.start.parent = self
 
-        # Data Fine
+        # End date
         self.end = BaseDateField(*args, **data_kwargs)
         self.end.required = data_kwargs.get('required')
         self.end.label = _("{} (Data fine)").format(parent_label)
         self.end.name = "{}_dyn".format(format_field_name(self.end.label))
 
-        # Riferimento a DateStartEndComplexField
+        # Set child parent
         self.end.parent = self
 
     def get_fields(self):
@@ -453,21 +441,16 @@ class DateStartEndComplexField(BaseCustomField):
         return fields
 
     def raise_error(self, name, cleaned_data, **kwargs):
-        """
-        Essendo un campo complesso che non ha riferimenti ai vincoli
-        imposti dal bando, si eseguono solo i controlli standard sulle
-        date di inizio e di fine
-        """
         errors = []
         start_value = cleaned_data.get(self.start.name)
         end_value = cleaned_data.get(self.end.name)
 
-        # Se il campo non viene correttamente inizializzato
+        # If inizialization fails
         if not cleaned_data.get(name): return []
 
-        # Si valuta 'Data Inizio'
+        # Check Start date
         if name == self.start.name:
-            # Se data_inizio > data_fine
+            # if start_date > end_date
             if end_value and start_value > end_value:
                 errors.append(_("La data di inizio non può "
                                 "essere successiva a quella di fine"))
@@ -477,7 +460,7 @@ class DateStartEndComplexField(BaseCustomField):
 
 class ProtocolloField(BaseCustomField):
     """
-    Tipo,Numero e Data protocollo (o altro tipo di numerazione)
+    Protocolo type, number and date (or another classification type)
     """
     field_type = "Protocollo (tipo/numero/data)"
     is_complex = True
@@ -485,7 +468,7 @@ class ProtocolloField(BaseCustomField):
     def __init__(self, *args, **data_kwargs):
         parent_label = data_kwargs.get('label')
 
-        # Tipo protocollo. SelectBox
+        # Procotol type (selectbox)
         self.tipo = CustomSelectBoxField(*args, **data_kwargs)
         self.tipo.required = data_kwargs.get('required')
         self.tipo.label = _("{} (Tipo numerazione)").format(parent_label)
@@ -496,7 +479,7 @@ class ProtocolloField(BaseCustomField):
                              for i in CLASSIFICATION_LIST]
         self.tipo.parent = self
 
-        # Numero protocollo. CharField
+        # Protocol number (char field)
         self.numero = CustomCharField(*args, **data_kwargs)
         self.numero.required = data_kwargs.get('required')
         self.numero.label = _("{} (Numero Protocollo/Delibera/Decreto)").format(parent_label)
@@ -505,7 +488,7 @@ class ProtocolloField(BaseCustomField):
                                   "protocollo/decreto/delibera")
         self.numero.parent = self
 
-        # Data protocollo. DateField
+        # Protocol date (DateField)
         self.data = BaseDateField(*args, **data_kwargs)
         self.data.required = data_kwargs.get('required')
         self.data.label = _("{} (Data Protocollo/Delibera/Decreto)").format(parent_label)
@@ -520,19 +503,14 @@ class ProtocolloField(BaseCustomField):
         return self.data.name
 
     def raise_error(self, name, cleaned_data, **kwargs):
-        """
-        Questo campo complesso subisce controlli inerenti i parametri
-        imposti dal bando e allo stesso tempo si relaziona, se presente,
-        a DataInizio e DataFine in range
-        """
         value = cleaned_data.get(name)
 
         if not value: return [_("Valore mancante")]
 
-        # Si valuta 'Data protocollo'
+        # Check protocol date
         if name == self.data.name:
             errors = []
-            # Se la data è successiva ad oggi
+            # If protocol_date > today
             if _successivo_ad_oggi(value):
                 errors.append(_("La data di protocollo non può essere"
                                 " successiva ad oggi"))
@@ -564,8 +542,8 @@ class CaptchaField(BaseCustomField):
     in settings:
         CAPTCHA_FONTS = ['/usr/share/fonts/truetype/ttf-bitstream-vera/Vera.ttf',
                          '/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf']
-        CAPTCHA_SECRET = '6sa78d6as83$_RDF'
-        CAPTCHA_SALT = 'ingoalla'
+        CAPTCHA_SECRET = b'6sa78d6as83$_RDF'
+        CAPTCHA_SALT = b'ingoalla'
 
     """
     widget = CaptchaWidget
@@ -573,19 +551,14 @@ class CaptchaField(BaseCustomField):
     def define_value(self, custom_value, **kwargs):
         self.widget = CaptchaWidget(attrs={'value': custom_value,
                                            'hidden_field': kwargs.get('hidden_field', ''),
-                                           'lang': kwargs.get('lang', 'en')})
+                                           'lang': kwargs.get('lang', getattr(settings,
+                                                                              'CAPTCHA_DEFAULT_LANG',
+                                                                              CAPTCHA_DEFAULT_LANG))})
 
 
-class CustomCaptchaComplexField(CaptchaField):
+class CustomCaptchaComplexField(BaseCustomField):
     """
-    Captcha
-
-    in settings:
-        CAPTCHA_FONTS = ['/usr/share/fonts/truetype/ttf-bitstream-vera/Vera.ttf',
-                         '/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf']
-        CAPTCHA_SECRET = '6sa78d6as83$_RDF'
-        CAPTCHA_SALT = 'ingoalla'
-
+    Captcha complex field (image, sound, input and hidden text)
     """
     field_type = _("Captcha")
     is_complex = True
@@ -598,35 +571,43 @@ class CustomCaptchaComplexField(CaptchaField):
 
         # CaPTCHA
         parent_label = kwargs.get('label')
-
-        self.captcha_hidden = CaptchaHiddenField()
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
-        text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
-        value = base64.b64encode(encrypt(text)).decode()
-        self.captcha_hidden.define_value(custom_value=value)
-        logger.debug(text, value)
+        self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
+        self.value = base64.b64encode(encrypt(self.text)).decode()
+        # self.captcha_hidden.define_value(custom_value=value)
+        logger.debug(self.text, self.value)
 
+        # Captcha hidden field
+        self.captcha_hidden = CaptchaHiddenField()
         self.captcha_hidden.required = True
         self.captcha_hidden.name = captcha_hidden_name or "{}_hidden_dyn".format(format_field_name(parent_label))
-        self.captcha_hidden.parent = self
         self.captcha_hidden.label = ''
+        self.captcha_hidden.parent = self
 
-        # TODO
-        # questo perchè viene nel constructor dict mentre dovrebbe venire nel custom_params ...
-        lang = 'en'
-        if kwargs.get('lang'):
-            lang = kwargs.pop('lang')
-
+        # Captcha field
         self.captcha = CaptchaField(*args, **kwargs)
         self.captcha.required = True
-        self.captcha.define_value(custom_value=text,
-                                  hidden_field="id_{}".format(self.captcha_hidden.name),
-                                  lang=lang)
+        # self.captcha.define_value(custom_value=text,
+                                  # hidden_field="id_{}".format(self.captcha_hidden.name),
+                                  # lang=self.lang)
         self.captcha.label = parent_label
         self.captcha.name = captcha_name or "{}_dyn".format(format_field_name(parent_label))
         # this should be taken from constructore dict
-        #self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
+        # self.captcha.help_text = _("CaPTCHA: inserisci i caratteri/numeri raffigurati nell'immagine")
         self.captcha.parent = self
+
+    def define_value(self, custom_value, **kwargs):
+        # captcha_hidden field define_value
+        self.captcha_hidden.define_value(custom_value=self.value)
+        # get language from form custom_params
+        # default 'en' (see captcha.py)
+        lang = kwargs.get('lang', getattr(settings,
+                                          'CAPTCHA_DEFAULT_LANG',
+                                          CAPTCHA_DEFAULT_LANG))
+        # captcha field define_value (with language code)
+        self.captcha.define_value(custom_value=self.text,
+                                  hidden_field="id_{}".format(self.captcha_hidden.name),
+                                  lang=lang)
 
     def get_fields(self):
         return [self.captcha, self.captcha_hidden]
@@ -651,8 +632,9 @@ class CustomCaptchaComplexField(CaptchaField):
 
 class CustomComplexTableField(ChoiceField, BaseCustomField):
     """
-    CustomComplexTableField
+    Formset field
     """
+    # error message if is_required and no forms are present
     validation_error = _("Questo campo necessita di almeno una riga")
     field_type = _("Inserimenti multipli")
     is_complex = True
@@ -664,18 +646,14 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
         return build_formset(choices=self.choices)
 
     def clean(self, *args, **kwargs):
-        # Se non ci sono forms e il campo è required allora deve fare
-        # l'override. In caso contrario, deve essere ignorato e il
-        # clean dei campi viene delegato ai singoli form
+        # If is_required and there aren't forms raise ValidationError.
+        # Else, each form will clean itself, raising its own fields errors.
         if self.required and not self.widget.formset.forms:
             raise ValidationError(self.validation_error)
         return
 
     def define_value(self, custom_value, **kwargs):
-        """
-        Se presenti, sostituisce alle opzioni di default
-        quelle di 'custom_value'
-        """
+        # Set field choices (if 'custom_value')
         if custom_value:
             elements = _split_choices_in_list_canc(custom_value)
             self.choices = elements

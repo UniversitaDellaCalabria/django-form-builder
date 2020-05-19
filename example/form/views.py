@@ -7,7 +7,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.html import strip_tags
 
 from django_form_builder.forms import BaseDynamicForm
-from django_form_builder.models import DynamicFieldMap
 from django_form_builder.utils import get_labeled_errors
 
 
@@ -77,18 +76,14 @@ constructor_dict = OrderedDict([
 @csrf_exempt
 def dynform(request):
     if request.method == 'GET':
-        form = DynamicFieldMap.get_form(BaseDynamicForm,
-                                        constructor_dict=constructor_dict,
-                                        custom_params=None,
+        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
                                         #data=data,
                                         #files=files,
                                         remove_filefields=False,
                                         remove_datafields=False)
     # if POST (form submitted)
     else:
-        form = DynamicFieldMap.get_form(BaseDynamicForm,
-                                        constructor_dict=constructor_dict,
-                                        custom_params=None,
+        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
                                         data=request.POST,
                                         files=request.FILES,
                                         remove_filefields=False,

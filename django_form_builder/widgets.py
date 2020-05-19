@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from . captcha import get_captcha
 from . enc import encrypt, decrypt
 from . formsets import build_formset
-from . settings import FORMSET_TEMPLATE_NAMEID
+from . settings import CAPTCHA_DEFAULT_LANG, FORMSET_TEMPLATE_NAMEID
 
 
 FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
@@ -22,9 +22,11 @@ class CaptchaWidget(forms.Widget):
     def render(self, name, value, attrs=None, renderer=None):
         """Render the widget as an HTML string."""
         context = self.get_context(name, value, attrs)
-        # captcha = get_captcha(value)
-        captcha_img, captcha_wav = get_captcha(self.attrs['value'],
-                                               self.attrs.get('lang', 'en'))
+        captcha_img, captcha_wav = get_captcha(text=self.attrs['value'],
+                                               lang=self.attrs.get('lang', getattr(settings,
+                                                                                   'CAPTCHA_DEFAULT_LANG',
+                                                                                   CAPTCHA_DEFAULT_LANG)))
+
         # javascript functions don't allow "-" char
         unique_id = name.replace("-", "_")
 

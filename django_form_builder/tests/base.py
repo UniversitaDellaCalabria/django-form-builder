@@ -4,6 +4,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from django_form_builder import dynamic_fields
+from django_form_builder.forms import BaseDynamicForm
 from django_form_builder.models import *
 
 
@@ -11,13 +12,9 @@ class BaseTest(TestCase):
 
     def get_baseform(self, initial_fields, data={}, files={}):
         """
-        Build a form from DynamicFieldMap
+        Build a form from BaseDynamicForm
         """
-        # form = BaseDynamicForm(initial_fields=initial_fields, data=data)
-        # form = self.entity_inputlist.get_form(initial_fields=initial_fields,
-                                              # data=data,
-                                              # files=files)
-        form = DynamicFieldMap.get_form(initial_fields=initial_fields,
+        form = BaseDynamicForm.get_form(initial_fields=initial_fields,
                                         data=data,
                                         files=files)
         return form

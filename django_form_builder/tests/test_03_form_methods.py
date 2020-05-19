@@ -78,8 +78,8 @@ class TestFormsets(BaseTest):
         """
         Test init form with build_constructor_dict() and fields list
         """
-        constructor_dict = DynamicFieldMap.build_constructor_dict(self.fields)
-        form = DynamicFieldMap.get_form(constructor_dict=constructor_dict,
+        constructor_dict = BaseDynamicForm.build_constructor_dict(self.fields)
+        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
                                         data=self.data)
         logger.info("Test form with dynamic fields (build_constructor_dict())")
         assert form.is_valid()
@@ -88,7 +88,7 @@ class TestFormsets(BaseTest):
         """
         Test compiled_form() method
         """
-        constructor_dict = DynamicFieldMap.build_constructor_dict(self.fields)
+        constructor_dict = BaseDynamicForm.build_constructor_dict(self.fields)
         form = SavedFormContent.compiled_form(data_source=json.dumps(self.data))
         logger.info("Test compiledform()")
         assert form.is_valid()
@@ -97,8 +97,8 @@ class TestFormsets(BaseTest):
         """
         Test compiled_form_readonly() method
         """
-        constructor_dict = DynamicFieldMap.build_constructor_dict(self.fields)
-        form = DynamicFieldMap.get_form(constructor_dict=constructor_dict,
+        constructor_dict = BaseDynamicForm.build_constructor_dict(self.fields)
+        form = BaseDynamicForm.get_form(constructor_dict=constructor_dict,
                                         data=self.data)
         SavedFormContent.compiled_form_readonly(form)
         logger.info("Test test_compiledform_readonly()")

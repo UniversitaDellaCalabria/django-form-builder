@@ -1,6 +1,5 @@
 import json
 
-from collections import OrderedDict
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -29,45 +28,6 @@ class DynamicFieldMap(models.Model):
                                               blank=True,
                                               default=0)
 
-    @staticmethod
-    def build_constructor_dict(fields):
-        """
-        costruisco il dizionario da dare in pasto
-        al costruttore del form dinamico
-        """
-        constructor_dict = OrderedDict()
-        for field in fields:
-            d = {'label': field.name,
-                 'required' : field.is_required,
-                 'help_text' : field.aiuto,
-                 'pre_text': getattr(field, 'pre_text', '')}
-            constructor_dict[field.name] = (field.field_type,
-                                            d,
-                                            field.valore)
-        return constructor_dict
-
-    @staticmethod
-    def get_form(class_obj=BaseDynamicForm,
-                 constructor_dict={},
-                 custom_params={},
-                 remove_filefields=False,
-                 remove_datafields=False,
-                 fields_order=[],
-                 *args, **kwargs):
-        if class_obj == BaseDynamicForm:
-            custom_params = {}
-        form = class_obj(constructor_dict=constructor_dict,
-                         custom_params=custom_params,
-                         *args, **kwargs)
-
-        if remove_filefields:
-            form.remove_files(allegati = remove_filefields)
-        if remove_datafields:
-            form.remove_datafields()
-        if fields_order:
-            form.order_fields(fields_order)
-        return form
-
     class Meta:
         abstract = True
         ordering = ('ordinamento',)
@@ -90,13 +50,16 @@ class SavedFormContent(models.Model):
                       # fields_order=[],
                       extra_datas={},
                       **kwargs):
+        """
+        Returns form compiled by data (json_dict = json.loads(data_source))
+        """
         json_dict = json.loads(data_source)
         data = get_as_dict(json_dict, allegati=False)
         if extra_datas:
             for k,v in extra_datas.items():
                 data[k]=v
         if not form_source:
-            form_source = DynamicFieldMap
+            form_source = BaseDynamicForm
         form = form_source.get_form(constructor_dict=constructor_dict,
                                     data=data,
                                     files=files,
@@ -111,13 +74,13 @@ class SavedFormContent(models.Model):
     @staticmethod
     def compiled_form_readonly(form, attr='disabled', fields_to_remove=[]):
         """
-        Restituisce una versione "più pulita" di compiled_form
-        - I field non compilati non vengono mostrati (remove_not_compiled_fields())
-        - Il campo "titolo" di default non viene mostrato
-        - I fields sono readonly
-        NOTA: i field select non risentono dell'attributo readonly!!!
-        Usato nei metodi che producono le anteprime non modificabili
-        dei moduli compilati
+        Returns a more clean version of the compiled_form.
+        - Not compiled fields aren't shown (remove_not_compiled_fields());
+        - Title attribute by default isn't shown;
+        - Form fields are readonly.
+        Note: SelectBox aren't affected by readonly attribute!
+
+        This method is useful to produce not editable compiled form.
         """
         form.remove_not_compiled_fields()
         for field_to_remove in fields_to_remove:
