@@ -5,6 +5,7 @@ from django import forms
 from django.conf import settings
 from django.utils.module_loading import import_string
 
+from . settings import CUSTOM_WIDGETS_IN_FORMSETS
 from . utils import _split_choices
 
 
@@ -37,10 +38,15 @@ def build_formset(choices, extra=0, required=False, prefix='form', data=None):
                 custom_field = getattr(sysmod, field_type_name)(**field_dict) \
                                if hasattr(sysmod, field_type_name) \
                                else getattr(sysmod, 'CustomCharField')
-                custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field_type_name) \
-                                if hasattr(settings, 'CUSTOM_WIDGETS') else None
-                if custom_widget:
-                    custom_field.widget = import_string(custom_widget)()
+
+                # choice if use or not fields custom widget
+                # javascript may cause some problem
+                use_custom_widget = getattr(settings, 'CUSTOM_WIDGETS_IN_FORMSETS', CUSTOM_WIDGETS_IN_FORMSETS)
+                if use_custom_widget:
+                    custom_widget = getattr(settings, 'CUSTOM_WIDGETS').get(field_type_name) \
+                                    if hasattr(settings, 'CUSTOM_WIDGETS') else None
+                    if custom_widget:
+                        custom_field.widget = import_string(custom_widget)()
 
                 if field_dict.get('choices'):
                     custom_field.choices += _split_choices(field_dict.get('choices'))
