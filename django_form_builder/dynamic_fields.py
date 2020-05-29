@@ -1,10 +1,11 @@
 import ast
 import base64
 import inspect
-import re
-import os
+import json
 import logging
+import os
 import random
+import re
 import string
 import sys
 
@@ -16,6 +17,8 @@ from django.forms import formset_factory
 from django.forms import ModelChoiceField
 from django.forms.fields import *
 from django.template.defaultfilters import filesizeformat
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from django.utils.module_loading import import_string
 from django.utils.translation import gettext as _
 
@@ -573,7 +576,12 @@ class CustomCaptchaComplexField(BaseCustomField):
         parent_label = kwargs.get('label')
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
         self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
-        self.value = base64.b64encode(encrypt(self.text)).decode()
+
+        self.hidden_data = '{"created": "' + timezone.now().isoformat() + '", "text": "' + self.text + '"}'
+
+        # self.value = base64.b64encode(encrypt(self.text)).decode()
+        self.value = base64.b64encode(encrypt(self.hidden_data)).decode()
+
         # self.captcha_hidden.define_value(custom_value=value)
         logger.debug(self.text, self.value)
 
@@ -619,14 +627,32 @@ class CustomCaptchaComplexField(BaseCustomField):
         errors = []
         value = cleaned_data.get(self.captcha.name)
         check = cleaned_data.get(self.captcha_hidden.name)
-        cvalue = ''
         try:
             cvalue = decrypt(check).decode()
-        except:
-            errors.append(_err_msg)
+            json_check = json.loads(cvalue)
+            created = json_check['created']
+            clear_text = json_check['text']
 
-        if value and cvalue.lower() != value.lower():
-            errors.append(_err_msg)
+            # if a value is submitted raise errors
+            # else required field error is raised
+            if value:
+                created_date = parse_datetime(created)
+                expiration_time = int(getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME))
+                is_expired = timezone.now() > (created_date + timezone.timedelta(seconds=expiration_time))
+
+                # if captcha is expired
+                # check on name
+                # (prevent to call 2 times this control, one for each child field)
+                if name == self.captcha.name and is_expired:
+                    errors.append(_('CaPTCHA expired'))
+
+                # if captcha is incorrect
+                # if value and cvalue.lower() != value.lower():
+                elif clear_text.lower() != value.lower():
+                    errors.append(_err_msg)
+        except Exception as e:
+            errors.append(e)
+
         return errors
 
 
