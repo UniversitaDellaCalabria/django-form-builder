@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from . captcha import get_captcha
 from . enc import encrypt, decrypt
 from . formsets import build_formset
-from . settings import CAPTCHA_DEFAULT_LANG, FORMSET_TEMPLATE_NAMEID
+from . settings import CAPTCHA_DEFAULT_LANG, CAPTCHA_EXPIRATION_TIME, FORMSET_TEMPLATE_NAMEID
 
 
 FORMSET_TEMPLATE_NAMEID = getattr(settings, 'FORMSET_TEMPLATE_NAMEID',
@@ -30,6 +30,9 @@ class CaptchaWidget(forms.Widget):
         # javascript functions don't allow "-" char
         unique_id = name.replace("-", "_")
 
+        # auto-refresh interval time
+        expiration_time = getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME)
+
         # image
         context['image_b64'] = base64.b64encode(captcha_img.read()).decode()
         context['widget']['value'] = ''
@@ -41,16 +44,20 @@ class CaptchaWidget(forms.Widget):
 
         inline_code = mark_safe(
             '<script>'
+            'var interval = setInterval(refresh_captcha_{unique_id}, {time});'
             'function refresh_captcha_{unique_id}(){{'
+                'clearInterval(interval);'
                 '$.get(location.href, function(data) {{'
                     '$("#{name}_img").attr("src",($(data).find("#{name}_img").attr("src")));'
                     '$("#{name}_wav").attr("src",($(data).find("#{name}_wav").attr("src")));'
                     '$("#{hidden_field}").val($(data).find("#{hidden_field}").val());'
                 '}});'
+                'interval = setInterval(refresh_captcha_{unique_id}, {time});'
             '}}'
             '</script>'.format(name=name,
                                unique_id=unique_id,
-                               hidden_field=self.attrs['hidden_field'])
+                               hidden_field=self.attrs['hidden_field'],
+                               time=expiration_time)
         )
 
         return self._render(self.template_name, context, renderer) + inline_code
