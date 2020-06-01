@@ -638,7 +638,7 @@ class CustomCaptchaComplexField(BaseCustomField):
             if value:
                 created_date = parse_datetime(created)
                 expiration_time = getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME)
-                is_expired = timezone.now() > (created_date + timezone.timedelta(milliseconds=expiration_time))
+                is_expired = timezone.now() > (created_date + timezone.timedelta(milliseconds=int(expiration_time)))
 
                 # if captcha is expired
                 # check on name
