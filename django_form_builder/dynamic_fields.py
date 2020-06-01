@@ -637,7 +637,7 @@ class CustomCaptchaComplexField(BaseCustomField):
             # else required field error is raised
             if value:
                 created_date = parse_datetime(created)
-                expiration_time = int(getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME))
+                expiration_time = getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME)
                 is_expired = timezone.now() > (created_date + timezone.timedelta(milliseconds=expiration_time))
 
                 # if captcha is expired
