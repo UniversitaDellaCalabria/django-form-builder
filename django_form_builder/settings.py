@@ -49,7 +49,7 @@ WRONG_TYPE = _("Per favore esegui l'upload di soli file "
                "Attualmente questo è '{}'")
 WRONG_SIZE = _("Per favore mantieni la dimensione del file entro {}. "
                "Attualmente questo è {}")
-WRONG_LENGHT = _("Per favore usa una lunghezza massima del nome dell'allegato "
+WRONG_LENGTH = _("Per favore usa una lunghezza massima del nome dell'allegato "
                  "inferiore a {}. Attualmente hai inserito un nome di {} caratteri")
 
 # formset special words

@@ -53,7 +53,7 @@ PERMITTED_UPLOAD_FILETYPE = getattr(settings,
                                     PERMITTED_UPLOAD_FILETYPE)
 WRONG_TYPE = getattr(settings, 'WRONG_TYPE', WRONG_TYPE)
 WRONG_SIZE = getattr(settings, 'WRONG_SIZE', WRONG_SIZE)
-WRONG_LENGHT = getattr(settings, 'WRONG_LENGHT', WRONG_LENGHT)
+WRONG_LENGTH = getattr(settings, 'WRONG_LENGTH', WRONG_LENGTH)
 IMG_FILETYPE = getattr(settings, 'IMG_FILETYPE', IMG_FILETYPE)
 DATA_FILETYPE = getattr(settings, 'DATA_FILETYPE', DATA_FILETYPE)
 PDF_FILETYPE = getattr(settings, 'PDF_FILETYPE', PDF_FILETYPE)
