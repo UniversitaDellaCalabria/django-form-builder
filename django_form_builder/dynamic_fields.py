@@ -200,9 +200,11 @@ class CustomFileField(FileField, BaseCustomField):
                 msg_tmpl = WRONG_SIZE
                 msg = msg_tmpl.format(filesizeformat(max_upload_size),
                                       filesizeformat(data.size))
-            elif len(data._name) > attach_max_len:
+            # elif len(data._name) > attach_max_len:
+            elif len(data.name) > attach_max_len:
                 msg_tmpl = WRONG_LENGTH
-                msg = msg_tmpl.format(attach_max_len, len(data._name))
+                # msg = msg_tmpl.format(attach_max_len, len(data._name))
+                msg = msg_tmpl.format(attach_max_len, len(data.name))
             if msg: errors.append(msg)
         return errors
 
