@@ -78,6 +78,41 @@ class TestInvalidFields(BaseTest):
         logger.info("Test valid DateStartEndComplexField")
         self.assertFalse(form.is_valid())
 
+    def test_ip_valid(self):
+        """
+        Test invalid values in CustomIPField
+        """
+        form = self.single_field_form('CustomIPField', '192.168.000.001')
+        logger.info("Test valid CustomIPField")
+        assert form.is_valid()
+
+
+    def test_ip_invalid(self):
+        """
+        Test invalid values in CustomIPField
+        """
+        form = self.single_field_form('CustomIPField', '192.168000001')
+        logger.info("Test invalid CustomIPField")
+        self.assertFalse(form.is_valid())
+
+    def test_mac_valid(self):
+        """
+        Test invalid values in CustomIPField
+        """
+        form = self.single_field_form('CustomMACField', '98:54:1b:07:15:ed')
+        logger.info("Test valid CustomMACField")
+        assert form.is_valid()
+
+
+    def test_mac_invalid(self):
+        """
+        Test invalid values in CustomIPField
+        """
+        form = self.single_field_form('CustomMACField', '98.541b:07:15:ed')
+        logger.info("Test invalid CustomMACField")
+        self.assertFalse(form.is_valid())
+
+
     def test_datetimefield_valid(self):
         """
         Test valid values in BaseDateTimeField

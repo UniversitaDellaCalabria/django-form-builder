@@ -126,6 +126,25 @@ class CustomEmailField(EmailField, BaseCustomField):
     field_type = _("E-mail")
 
 
+class CustomIPField(GenericIPAddressField, BaseCustomField):
+    """
+    GenericIPAddressField
+    """
+    field_type = _("Indirizzo IP")
+
+class CustomMACField(CustomCharField, BaseCustomField):
+    """
+    GenericIPAddressField
+    """
+    field_type = _("MAC Address")
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        if not cleaned_data: return []
+
+        # Only valid sequences
+        if not re.match('([0-9a-fA-F]:?){12}', str(cleaned_data)):
+            return [_("Formato non valido"),]
+
 class CustomChoiceField(ChoiceField, BaseCustomField):
     """
     ChoiceField
