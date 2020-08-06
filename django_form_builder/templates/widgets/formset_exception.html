@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<ul class="errorlist">
+    <li>
+        <span class="text-danger">
+            <small>
+                <b>{% trans "Errore nella costruzione del campo" %}.</b>
+                <br>
+                {% trans "La definizione delle righe non è corretta." %}
+                {% trans "Verifica la denominazione delle classi ed evita l'utilizzo di caratteri speciali." %}
+                <br>
+                Error: {{ error }}
+            </small>
+        </span>
+    </li>
+</ul>

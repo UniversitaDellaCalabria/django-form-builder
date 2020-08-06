@@ -695,6 +695,8 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
     def clean(self, *args, **kwargs):
         # If is_required and there aren't forms raise ValidationError.
         # Else, each form will clean itself, raising its own fields errors.
+        if not self.widget.formset:
+            raise ValidationError(self.validation_error)
         if self.required and not self.widget.formset.forms:
             raise ValidationError(self.validation_error)
         return

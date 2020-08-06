@@ -74,22 +74,25 @@ class FormsetdWidget(forms.Widget):
         for i in init_data_list:
             if i in kwargs.keys():
                 setattr(self, i, kwargs.pop(i))
-
-        if getattr(self, 'data'):
-            # It MUST be a list!
-            # self.data = [{'ccc': 'dfgdfgdfg', 'co': 'sono', 'col1': 'un', 'data': '2019-04-03'},
-            #              {'ccc': '234234', 'co': 'son44o', 'col1': 'un333', 'data': '2016-04-03'}]
-            self.formset = build_formset(choices=self.choices,
-                                         required=field_required,
-                                         prefix=self.prefix,
-                                         data=self.data)
-            self.formset.is_valid()
-        else:
-            # this initialized the formset as void
-            self.formset = build_formset(choices=self.choices,
-                                         required=field_required,
-                                         extra=0,
-                                         prefix=self.prefix)
+        try:
+            if getattr(self, 'data'):
+                # It MUST be a list!
+                # self.data = [{'ccc': 'dfgdfgdfg', 'co': 'sono', 'col1': 'un', 'data': '2019-04-03'},
+                #              {'ccc': '234234', 'co': 'son44o', 'col1': 'un333', 'data': '2016-04-03'}]
+                self.formset = build_formset(choices=self.choices,
+                                             required=field_required,
+                                             prefix=self.prefix,
+                                             data=self.data)
+                self.formset.is_valid()
+            else:
+                # this initialized the formset as void
+                self.formset = build_formset(choices=self.choices,
+                                             required=field_required,
+                                             extra=0,
+                                             prefix=self.prefix)
+        except:
+            # raise Exception('custom message')
+            self.formset = None
         super().__init__(*attrs, **kwargs)
 
     def get_js_template(self):
@@ -103,13 +106,17 @@ class FormsetdWidget(forms.Widget):
         return mark_safe(res)
 
     def render(self, name='', value='', attrs=None, renderer=None):
-        context_data = {'formset_id': self.prefix,
-                        'template_generic_id': FORMSET_TEMPLATE_NAMEID,
-                        'formset': self.formset,
-                        'formset_template': self.get_js_template(),
-                        'readonly': self.readonly,}
-        html_output = render_to_string(self.template, context_data)
-        return mark_safe(html_output)
+        try:
+            context_data = {'formset_id': self.prefix,
+                            'template_generic_id': FORMSET_TEMPLATE_NAMEID,
+                            'formset': self.formset,
+                            'formset_template': self.get_js_template(),
+                            'readonly': self.readonly,}
+            html_output = render_to_string(self.template, context_data)
+            return mark_safe(html_output)
+        except Exception as e:
+            # raise Exception(e)
+            return render_to_string("widgets/formset_exception.html", {'error': e})
 
     def make_readonly(self, attr='disabled'):
         self.readonly = True

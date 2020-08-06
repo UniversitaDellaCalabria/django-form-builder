@@ -311,10 +311,14 @@ class BaseDynamicForm(forms.Form):
             field = self.fields[fname]
 
             # formset is empty or not valid
-            if field.is_formset and not field.widget.formset.is_valid():
-                errors = field.widget.formset.errors
-                self.add_error(fname, errors)
-                continue
+            if field.is_formset:
+                if not field.widget.formset:
+                    # self.add_error(fname, "")
+                    continue
+                if not field.widget.formset.is_valid():
+                    errors = field.widget.formset.errors
+                    self.add_error(fname, errors)
+                    continue
 
             # other fields check
             # if field is a child of a complex field
