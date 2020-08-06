@@ -1,0 +1,128 @@
+# django-form-builder
+# en
+
+msgid "Testo"
+msgstr "Text"
+
+msgid "Indirizzo IP"
+msgstr "IP Address"
+
+msgid "Formato non valido"
+msgstr "Invalid format"
+
+msgid "Numero massimo di scelte consentito: {}"
+msgstr "Max allowed choices: {}"
+
+msgid "Allegato (generico)"
+msgstr "Attachment (generic)"
+
+msgid "Allegato Immagine"
+msgstr "Picture attachment"
+
+msgid "Allegato file dati (JSON, CSV, Excel)"
+msgstr "Data file attachment (JSON, CSV, Excel)"
+
+msgid "Allegato PDF"
+msgstr "PDF Attachment"
+
+msgid "Allegato PDF firmato"
+msgstr "Signed PDF Attachment"
+
+msgid "Errore di validazione della firma digitale"
+msgstr "Digital sign validation error "
+
+msgid "Numero intero positivo"
+msgstr "Positive integer field"
+
+msgid "Solo numeri ammessi"
+msgstr "Only number admitted"
+
+msgid "Numero con virgola positivo"
+msgstr "Positive float number"
+
+msgid "Testo lungo"
+msgstr "Long text"
+
+msgid "Checkbox multi-valore"
+msgstr "Multi-value checkbox"
+
+msgid "Lista di opzioni (tendina)"
+msgstr "Selectbox"
+
+msgid "Lista di opzioni (checkbox)"
+msgstr "Radiobox"
+
+msgid "Data"
+msgstr "Date"
+
+msgid "Data e Ora"
+msgstr "Datetime"
+
+msgid "Ore"
+msgstr "Hours"
+
+msgid "Minuti"
+msgstr "Minutes"
+
+msgid "Data inizio e Data fine"
+msgstr "Start date and End date"
+
+msgid "Data inizio"
+msgstr "Start date"
+
+msgid "Data fine"
+msgstr "End date"
+
+msgid "La data di inizio non può essere successiva a quella di fine"
+msgstr "The start date cannot be later than the end date"
+
+msgid "Protocollo (tipo/numero/data)"
+msgstr "Protocol (type/number/date)"
+
+msgid "Tipo numerazione"
+msgstr "Type"
+
+msgid "Scegli se protocollo/decreto/delibera, al/alla quale la numerazione è riferita"
+msgstr "Choose whether protocol/decree/resolution, to which the numbering refers"
+
+msgid "Numero Protocollo/Delibera/Decreto"
+msgstr "Number"
+
+msgid "Indica il numero del protocollo/decreto/delibera"
+msgstr "Indicates the number of the protocol/decree/resolution"
+
+msgid "Data Protocollo/Delibera/Decreto"
+msgstr "Date"
+
+msgid "Indica la data del protocollo/decreto/delibera"
+msgstr "Indicates the date of the protocol/decree/resolution"
+
+msgid "Valore mancante"
+msgstr "Missing value"
+
+msgid "La data di protocollo non può essere successiva ad oggi"
+msgstr "The protocol date cannot be later than today"
+
+msgid "Campo nascosto"
+msgstr "Hidden field"
+
+msgid "Questo campo necessita di almeno una riga"
+msgstr "This field needs at least one row"
+
+msgid "Inserimenti multipli"
+msgstr "Formset"
+
+msgid "Aggiungi inserimento"
+msgstr "Add another one"
+
+msgid "Rimuovi inserimento"
+msgstr "Remove this one"
+
+msgid "Errore nella costruzione del campo"
+msgstr "Error in field building"
+
+msgid "La definizione delle righe non è corretta"
+msgstr "The definition of the rows is incorrect"
+
+msgid "Verifica la denominazione delle classi ed evita l'utilizzo di caratteri speciali"
+msgstr "Check the naming of the classes and avoid using special characters"
