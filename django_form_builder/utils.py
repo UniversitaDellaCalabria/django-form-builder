@@ -15,6 +15,15 @@ MANAGEMENT_FORMSET_STRINGS = getattr(settings, 'MANAGEMENT_FORMSET_STRINGS',
                                      MANAGEMENT_FORMSET_STRINGS)
 
 
+def format_field_name(field_name, lower=True):
+    f = field_name.replace(' ','_')
+    f = f.replace('(','')
+    f = f.replace(')','')
+    f = f.replace('/','_')
+    if lower: return f.lower()
+    return f.upper
+
+
 def get_labeled_errors(form):
     d = {}
     for field_name in form.errors:

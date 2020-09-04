@@ -26,7 +26,8 @@ from . enc import encrypt
 from . formsets import build_formset
 from . widgets import *
 from . settings import *
-from . utils import (_split_choices,
+from . utils import (format_field_name,
+                     _split_choices,
                      _split_choices_in_list_canc,
                      _successivo_ad_oggi)
 
@@ -70,15 +71,6 @@ def get_fields_types(class_name=sys.modules[__name__]):
                 fields_types.append(tuple((m[1].__name__, field_type)))
     fields_types.sort(key=lambda tup: tup[1])
     return fields_types
-
-
-def format_field_name(field_name, lower=True):
-    f = field_name.replace(' ','_')
-    f = f.replace('(','')
-    f = f.replace(')','')
-    f = f.replace('/','_')
-    if lower: return f.lower()
-    return f.upper
 
 
 class BaseCustomField(Field):

@@ -8,7 +8,7 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.module_loading import import_string
 
 from . import dynamic_fields
-from . utils import _split_choices_in_list_canc
+from . utils import format_field_name, _split_choices_in_list_canc
 from . widgets import FormsetdWidget
 
 
@@ -43,7 +43,7 @@ class BaseDynamicForm(forms.Form):
 
         :example initial_fields:
         # Generate static NAME field
-        name_id = dynamic_fields.format_field_name("Personal name")
+        name_id = format_field_name("Personal name")
         # Set NAME field data
         name_data = {'required' : True,
                      'label': "Name",
@@ -129,7 +129,7 @@ class BaseDynamicForm(forms.Form):
                     field_id = key
                 # else build id with utility method
                 else:
-                    field_id = dynamic_fields.format_field_name(key)
+                    field_id = format_field_name(key)
 
                 # start building field data kwargs
                 # default contructor data (capitalize key for label)

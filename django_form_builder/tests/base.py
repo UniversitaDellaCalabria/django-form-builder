@@ -6,6 +6,7 @@ from django.test import TestCase
 from django_form_builder import dynamic_fields
 from django_form_builder.forms import BaseDynamicForm
 from django_form_builder.models import *
+from django_form_builder.utils import format_field_name
 
 
 class BaseTest(TestCase):
@@ -62,7 +63,7 @@ class BaseTest(TestCase):
         """
         field = self.create_field(field_class=field_class,
                                   required=required)[0]
-        field_id = dynamic_fields.format_field_name(field.label)
+        field_id = format_field_name(field.label)
         initial_fields = {field_id: field}
         data = {field_id: data_value}
         files = {field_id: file_value}

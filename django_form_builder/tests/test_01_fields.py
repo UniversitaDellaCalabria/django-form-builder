@@ -4,7 +4,7 @@ import os
 from django_form_builder import dynamic_fields
 from django_form_builder.settings import ATTACHMENTS_DICT_PREFIX, CLASSIFICATION_LIST
 from django_form_builder.templatetags.django_form_builder_tags import *
-from django_form_builder.utils import get_labeled_errors
+from django_form_builder.utils import format_field_name, get_labeled_errors
 
 from . base import BaseTest
 
@@ -118,7 +118,7 @@ class TestInvalidFields(BaseTest):
         Test valid values in BaseDateTimeField
         """
         super_label = 'Field label'
-        field_id = dynamic_fields.format_field_name(super_label)
+        field_id = format_field_name(super_label)
         data = {'{}_data_dyn'.format(field_id): '11/01/2020',
                 '{}_ore_dyn'.format(field_id): '12',
                 '{}_minuti_dyn'.format(field_id): '12'}
@@ -168,7 +168,7 @@ class TestInvalidFields(BaseTest):
         # name = 'test_signed.pdf'
         # file_obj = self.get_file(name)
         # field = self.create_field('CustomSignedPdfField')[0]
-        # field_id = dynamic_fields.format_field_name(field.label)
+        # field_id = format_field_name(field.label)
         # initial_fields = {field_id: field}
         # files = {field_id: file_obj}
         # form = self.get_baseform(initial_fields=initial_fields,

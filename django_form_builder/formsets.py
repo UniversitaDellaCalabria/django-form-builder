@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.module_loading import import_string
 
 from . settings import CUSTOM_WIDGETS_IN_FORMSETS
-from . utils import _split_choices
+from . utils import format_field_name, _split_choices
 
 
 def get_empty_form(form_class=forms.Form):
@@ -18,17 +18,17 @@ def get_empty_form(form_class=forms.Form):
 def build_formset(choices, extra=0, required=False, prefix='form', data=None):
     """ Get formset
     """
-    _regexp = '(?P<colname>[a-zA-Z0-9_]*)\((?P<coldict>[\{\}\.0-9a-zA-Z\'\"\:\;\_\,\s\-]*)\)'
+    _regexp = '(?P<colname>[a-zA-Z0-9_ ]*)\((?P<coldict>[\{\}\.0-9a-zA-Z\'\"\:\;\_\,\s\- ]*)\)'
     min_num = 0
     if required: min_num = 1
     eform = get_empty_form()
     for choice in choices:
-        colname = choice # needed for simple CharField withoud attrs
+        colname = format_field_name(choice) # needed for simple CharField withoud attrs
         contenuto = re.search(_regexp, choice)
         field_dict = None
         if contenuto:
             coldict = contenuto.groupdict().get('coldict')
-            colname = contenuto.groupdict()['colname']
+            colname = format_field_name(contenuto.groupdict()['colname'])
             if coldict:
                 field_dict = ast.literal_eval(coldict)
                 field_type_name = field_dict['type']
