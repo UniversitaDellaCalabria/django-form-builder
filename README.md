@@ -8,7 +8,7 @@ Django Form Builder
 
 A Django Framework application to build dynamic forms, with widgets and Django's standards, using JSON objects.
 
-Forms can be saved in a configurable storage (or settings.py). Users that requires high levels of customization will found what they look for.
+Forms can be saved in a configurable storage (or settings.py). Users that requires high levels of customization will found what they're look for.
 
 Consult the [Official Documentation](https://django-form-builder.readthedocs.io/en/latest/index.html) at readthedocs for usage specifications and advanced topics.
 
