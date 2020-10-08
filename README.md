@@ -6,7 +6,7 @@
 Django Form Builder
 -------------------
 
-A Django Framework application to build dynamic forms, with widgets and Django's standards, using a JSON objects.
+A Django Framework application to build dynamic forms, with widgets and Django's standards, using JSON objects.
 
 Every form can be saved in a configurable storage, in JSON format. Users that requires a high level of customization will found in it what they look for.
 
