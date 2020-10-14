@@ -118,6 +118,13 @@ class CustomEmailField(EmailField, BaseCustomField):
     field_type = _("E-mail")
 
 
+class CustomURLField(URLField, BaseCustomField):
+    """
+    URLield
+    """
+    field_type = _("URL")
+
+
 class CustomIPField(GenericIPAddressField, BaseCustomField):
     """
     GenericIPAddressField
@@ -590,7 +597,7 @@ class CustomCaptchaComplexField(BaseCustomField):
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
         self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
 
-        self.hidden_data = '{"created": "' + timezone.now().isoformat() + '", "text": "' + self.text + '"}'
+        self.hidden_data = '{"created": "' + timezone.localtime().isoformat() + '", "text": "' + self.text + '"}'
 
         # self.value = base64.b64encode(encrypt(self.text)).decode()
         self.value = base64.b64encode(encrypt(self.hidden_data)).decode()
@@ -651,7 +658,7 @@ class CustomCaptchaComplexField(BaseCustomField):
             if value:
                 created_date = parse_datetime(created)
                 expiration_time = getattr(settings, 'CAPTCHA_EXPIRATION_TIME', CAPTCHA_EXPIRATION_TIME)
-                is_expired = timezone.now() > (created_date + timezone.timedelta(milliseconds=int(expiration_time)))
+                is_expired = timezone.localtime() > (created_date + timezone.timedelta(milliseconds=int(expiration_time)))
 
                 # if captcha is expired
                 # check on name

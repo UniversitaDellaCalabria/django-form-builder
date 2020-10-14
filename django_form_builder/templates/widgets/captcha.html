@@ -14,26 +14,29 @@
       <div class="row">
 
         <div class="col-sx">
-         <img class="captcha_dyn_form mt-1 p-2" style="border: 1px grey dotted;"
+         <img class="captcha_dyn_form mt-1 p-2" style="border: 1px grey dotted; margin-left: 15px;" 
               id="{{ widget.name }}_img"
               src="data:image/png;base64,{{ image_b64 }}" />
         </div>
 
         <div class="col-sx">
-            <button type="button" class="btn btn-primary btn-block mt-1 ml-1 py-1 px-0"
+            <button id="captcha_refresh_button" type="button" class="btn btn-primary btn-block mt-1 ml-1 py-1 px-0"
                     onclick="refresh_captcha_{{ widget.unique_id }}();" />
+<!--
                 <svg class="icon icon-white icon-xs">
                     <use xlink:href="/static/svg/sprite.svg#it-refresh"></use>
                 </svg>
+-->
+            <span>{% trans 'REFRESH' %}</span>
             </button>
 
           <audio id="{{ widget.name }}_wav" controls
            src="data:audio/wav;base64,{{ audio_b64 }}"
-           style="width: 80px;" class="mt-1 ml-1" />
+           style="width: 120px;" class="mt-1 ml-1" />
         </div>
     </div>
 
-    <div class="text-left">
+    <div class="text-left ">
       <input placeholder="{% trans 'Insert CaPTCHA here' %}"
        style="width: 172px;"
        type="text"
@@ -42,5 +45,7 @@
        value="{{ widget.value | stringformat:'s' }}"
        {% include "django/forms/widgets/attrs.html" %}>
     </div>
+    
+     <p class="text-secondary">{% trans "Inserisci il valore rappresentato nella immagine CaPTCHA." %}</p>
 
 </div>
