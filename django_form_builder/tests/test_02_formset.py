@@ -117,6 +117,7 @@ class TestFormsets(BaseTest):
         formset_field.widget = FormsetdWidget(field_required=True,
                                               prefix=prefix,
                                               data=data,
+                                              files={},
                                               choices=choices)
 
         logger.info("Test form with formset widget (FormsetdWidget)")

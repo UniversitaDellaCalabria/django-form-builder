@@ -1,15 +1,28 @@
 import copy
+import re
 
 from collections import OrderedDict
 from django import forms
 from django.conf import settings
 from django.forms.fields import FileField
+from django.http import QueryDict
 from django.template.defaultfilters import filesizeformat
 from django.utils.module_loading import import_string
 
 from . import dynamic_fields
+from . settings import FORMSET_REGEX
 from . utils import format_field_name, _split_choices_in_list_canc
 from . widgets import FormsetdWidget
+
+
+def _remove_filefields_from_formset(formset):
+    for f_form in formset.forms:
+        to_be_removed_formset = []
+        for f_field in f_form.fields:
+            if not isinstance(f_form.fields[f_field], FileField):
+                to_be_removed_formset.append(f_field)
+        for i in to_be_removed_formset:
+            del f_form.fields[i]
 
 
 class BaseDynamicForm(forms.Form):
@@ -201,7 +214,8 @@ class BaseDynamicForm(forms.Form):
 
                             # add formset widget to form field
                             self.fields[name].widget = FormsetdWidget(choices=choices,
-                                                                      data=kwargs.get('data', {}),
+                                                                      data=kwargs.get('data',{}),
+                                                                      files=kwargs.get('files',{}),
                                                                       field_required=field.required,
                                                                       prefix=name)
                         # else if field isn't a Formset
@@ -253,13 +267,13 @@ class BaseDynamicForm(forms.Form):
             # remove not compiled single fields in formset
             if form_field.is_formset:
                 formset = form_field.widget.formset
-                for fform in formset:
+                for f_form in formset:
                     to_be_removed_formset = []
-                    for generic_field in fform:
+                    for generic_field in f_form:
                        if not generic_field.value():
                             to_be_removed_formset.append(generic_field.name)
                     for i in to_be_removed_formset:
-                        del fform.fields[i]
+                        del f_form.fields[i]
                 continue
 
             if not field.value():
@@ -273,25 +287,40 @@ class BaseDynamicForm(forms.Form):
         """
         to_be_removed = []
         for field in self.fields:
-            if not isinstance(self.fields[field], FileField):
+            if isinstance(self.fields[field], dynamic_fields.CustomComplexTableField):
+                _remove_filefields_from_formset(self.fields[field].widget.formset)
+            elif not isinstance(self.fields[field], FileField):
                 to_be_removed.append(field)
         for i in to_be_removed:
             del self.fields[i]
 
-    def remove_files(self, allegati = None):
+    def remove_files(self, allegati=None):
         """
         Remove all FileFields.
         Used in edit form if attachments are present
         """
+        REGEX = getattr(settings, 'FORMSET_REGEX', FORMSET_REGEX)
         to_be_removed = []
         for field in self.fields:
             if isinstance(allegati, dict):
-                # remove only specified attachments/files
-                if field in allegati:
-                    to_be_removed.append(field)
-            elif isinstance(self.fields[field], FileField):
+                for allegato in allegati:
+                    if field==allegato:
+                        to_be_removed.append(field)
+                    else:
+                        formset_regex = re.match(FORMSET_REGEX.format(field), allegato)
+                        if formset_regex:
+                            index = int(formset_regex['index'])
+                            name = formset_regex['name']
+                            formset = self.fields[field].widget.formset
+                            try:
+                                del formset.forms[index].fields[name]
+                            except: continue
+            else:
                 # remove all attachments/files
-                to_be_removed.append(field)
+                if isinstance(self.fields[field], FileField):
+                    to_be_removed.append(field)
+                elif isinstance(self.fields[field], dynamic_fields.CustomComplexTableField):
+                    _remove_filefields_from_formset(self.fields[field].widget.formset)
         for i in to_be_removed:
             del self.fields[i]
 
@@ -313,12 +342,20 @@ class BaseDynamicForm(forms.Form):
             # formset is empty or not valid
             if field.is_formset:
                 if not field.widget.formset:
-                    # self.add_error(fname, "")
                     continue
-                if not field.widget.formset.is_valid():
-                    errors = field.widget.formset.errors
-                    self.add_error(fname, errors)
-                    continue
+                for f_form in field.widget.formset.forms:
+                    for f_field_name in f_form.fields:
+                        f_field = f_form.fields[f_field_name]
+                        errors = f_field.raise_error(f_field_name,
+                                                     f_form.cleaned_data.get(f_field_name),
+                                                     **kwargs)
+                        if errors:
+                            f_form.add_error(f_field_name, errors)
+                    if not f_form.is_valid():
+                        f_form_errors = f_form.errors.as_data()
+                        for error_field in f_form_errors:
+                            if error_field in f_form.fields:
+                                self.add_error(fname, f_form_errors[error_field])
 
             # other fields check
             # if field is a child of a complex field
@@ -372,13 +409,13 @@ class BaseDynamicForm(forms.Form):
         # form = class_obj(constructor_dict=constructor_dict,
                          # custom_params={} if class_obj == BaseDynamicForm else custom_params,
                          # *args, **kwargs)
-        constructor_class = class_obj if class_obj else cls
+        constructor_class = class_obj or cls
         form = constructor_class(constructor_dict=constructor_dict,
                                  custom_params=custom_params,
                                  *args, **kwargs)
 
         if remove_filefields:
-            form.remove_files(allegati = remove_filefields)
+            form.remove_files(allegati=remove_filefields)
         if remove_datafields:
             form.remove_datafields()
         if fields_order:

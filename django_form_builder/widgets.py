@@ -68,7 +68,7 @@ class FormsetdWidget(forms.Widget):
     def __init__(self, *attrs, **kwargs):
         self.template = 'widgets/formset.html'
         self.readonly = False
-        init_data_list = ['choices', 'data']
+        init_data_list = ['choices', 'data', 'files']
         field_required = kwargs.pop('field_required')
         self.prefix = kwargs.pop('prefix')
         for i in init_data_list:
@@ -82,7 +82,8 @@ class FormsetdWidget(forms.Widget):
                 self.formset = build_formset(choices=self.choices,
                                              required=field_required,
                                              prefix=self.prefix,
-                                             data=self.data)
+                                             data=self.data,
+                                             files=self.files)
                 self.formset.is_valid()
             else:
                 # this initialized the formset as void

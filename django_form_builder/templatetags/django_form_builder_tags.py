@@ -14,7 +14,7 @@ def get_dyn_field_name(value):
 
 @register.simple_tag
 def get_attachment_sign_details(form, field_path, field_name, field_value):
-    field = form.fields[field_name]
-    if isinstance(field, dynamic_fields.CustomSignedFileField):
+    field = form.fields.get(field_name, None)
+    if field and isinstance(field, dynamic_fields.CustomSignedFileField):
         return field.get_cleaned_signature_params('{}/{}'.format(field_path, field_value))
     return False

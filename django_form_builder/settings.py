@@ -53,6 +53,9 @@ WRONG_LENGTH = _("Per favore usa una lunghezza massima del nome dell'allegato "
                  "inferiore a {}. Attualmente hai inserito un nome di {} caratteri")
 
 # formset special words
+FORMSET_REGEX = "^(?P<field_name>{})-(?P<index>[0-9]+)-(?P<name>[a-zA-Z0-9_\-]+)$"
+FORMSET_FULL_REGEX = FORMSET_REGEX.format("[a-zA-Z0-9_\-]+")
+
 FORMSET_TEMPLATE_NAMEID = 'NNNNN'
 MANAGEMENT_FORMSET_STRINGS = [FORMSET_TEMPLATE_NAMEID,
                               '-TOTAL_FORMS', '-INITIAL_FORMS',
