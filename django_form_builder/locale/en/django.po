@@ -55,8 +55,11 @@ msgstr "Radiobox"
 msgid "Data"
 msgstr "Date"
 
-msgid "Data e Ora"
-msgstr "Datetime"
+msgid "Data e Ora (campi separati)"
+msgstr "Datetime (separated fields)"
+
+msgid "Data e ora (campo singolo)"
+msgstr "Datetime (single field)"
 
 msgid "Ore"
 msgstr "Hours"
