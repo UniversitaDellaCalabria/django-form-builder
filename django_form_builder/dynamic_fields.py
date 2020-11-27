@@ -388,20 +388,28 @@ class CustomRadioBoxField(CustomChoiceField):
     field_type = _("Lista di opzioni (checkbox)")
     widget = forms.RadioSelect
 
+
 class BaseDateField(DateField, BaseCustomField):
     """
     DateField
     """
     field_type = _("Data")
-    widget = forms.DateInput
     input_formats = settings.DATE_INPUT_FORMATS
+
+
+class BaseDateTimeSimpleField(DateTimeField, BaseCustomField):
+    """
+    DateTimeField
+    """
+    field_type = _("Data e ora (campo singolo)")
+    input_formats = settings.DATETIME_INPUT_FORMATS
 
 
 class BaseDateTimeField(BaseCustomField):
     """
     DateTimeField
     """
-    field_type = _("Data e Ora")
+    field_type = _("Data e Ora (campi separati)")
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
