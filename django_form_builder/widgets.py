@@ -42,7 +42,7 @@ class CaptchaWidget(forms.Widget):
         # audio
         context['audio_b64'] = base64.b64encode(captcha_wav).decode()
 
-        inline_code = mark_safe(
+        inline_code = mark_safe( # nosec
             '<script>'
             'var interval = setInterval(refresh_captcha_{unique_id}, {time});'
             'function refresh_captcha_{unique_id}(){{'
@@ -104,7 +104,7 @@ class FormsetdWidget(forms.Widget):
                      '{}-{}'.format(self.prefix,
                                     FORMSET_TEMPLATE_NAMEID),
                      formset.forms[0].as_table())
-        return mark_safe(res)
+        return mark_safe(res) # nosec
 
     def render(self, name='', value='', attrs=None, renderer=None):
         try:
@@ -114,7 +114,7 @@ class FormsetdWidget(forms.Widget):
                             'formset_template': self.get_js_template(),
                             'readonly': self.readonly,}
             html_output = render_to_string(self.template, context_data)
-            return mark_safe(html_output)
+            return mark_safe(html_output) # nosec
         except Exception as e:
             # raise Exception(e)
             return render_to_string("widgets/formset_exception.html", {'error': e})

@@ -314,7 +314,7 @@ class BaseDynamicForm(forms.Form):
                             formset = self.fields[field].widget.formset
                             try:
                                 del formset.forms[index].fields[name]
-                            except: continue
+                            except Exception: continue # nosec
             else:
                 # remove all attachments/files
                 if isinstance(self.fields[field], FileField):

@@ -18,7 +18,7 @@ def get_empty_form(form_class=forms.Form):
 def build_formset(choices, extra=0, required=False, prefix='form', data={}, files={}):
     """ Get formset
     """
-    _regexp = '(?P<colname>[a-zA-Z0-9_ ]*)\((?P<coldict>[\{\}\.0-9a-zA-Z\'\"\:\;\_\,\s\- ]*)\)'
+    _regexp = '(?P<colname>[a-zA-Z0-9À-ÿ\'\"\_ ]*)\((?P<coldict>[\{\}\.0-9a-zA-ZÀ-ÿ\'\"\:\;\_\,\s\- ]*)\)'
     min_num = 0
     if required: min_num = 1
     eform = get_empty_form()

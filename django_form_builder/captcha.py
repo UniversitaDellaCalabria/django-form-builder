@@ -32,7 +32,7 @@ def get_captcha(text=None, lang=getattr(settings,
     except IndexError as e:
         raise AudioCaptchaLangPackNotFound()
 
-    text = text or ''.join([random.choice(string.ascii_letters+string.hexdigits)
+    text = text or ''.join([random.choice(string.ascii_letters+string.hexdigits) # nosec
                             for i in range(length)])
 
     data_image = image.generate(text)

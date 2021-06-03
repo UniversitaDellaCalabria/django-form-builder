@@ -82,7 +82,7 @@ class TestInvalidFields(BaseTest):
         """
         Test invalid values in CustomIPField
         """
-        form = self.single_field_form('CustomIPField', '192.168.000.001')
+        form = self.single_field_form('CustomIPField', '192.168.0.1')
         logger.info("Test valid CustomIPField")
         assert form.is_valid()
 

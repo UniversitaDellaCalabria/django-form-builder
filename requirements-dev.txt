@@ -9,3 +9,11 @@ codecov
 sphinx>=2.0.0
 sphinx_rtd_theme
 sphinxcontrib-images
+
+autoflake
+autopep8
+coverage
+black
+flake8
+isort
+bandit
