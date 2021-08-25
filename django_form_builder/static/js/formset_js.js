@@ -75,7 +75,7 @@ $(document).on('click', '.add-form-row', function(e){
     // If this method is called, the default action of the event will not be triggered.
     e.preventDefault();
     // get formset prefix
-    var formset_prefix = $(this).attr('id').split('-')[2];
+    var formset_prefix = $(this).attr('id').split(/add-form-(.+)/)[1]
     // get formset template
     var formset_template = $('#formset-template-'+formset_prefix);
     // get generic_id attribute
@@ -95,7 +95,7 @@ $(document).on('click', '.remove-form-row', function(e){
     // get the CSS class of element that contains form and button
     var container_class = '.form-container';
     // get formset prefix
-    var prefix = $(this).attr('id').split('-')[1];
+    var prefix = $(this).attr('id').split(/-[0-9+]/)[0]
     // get the element to remove (contains the form and the "remove" button)
     var to_remove = $(this).closest(container_class);
     // call deleteForm method
