@@ -167,6 +167,7 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
     def __init__(self, *args, **data_kwargs):
         super().__init__(*args, **data_kwargs)
         self.choices = []
+        self.max_permitted = 0
 
     def define_value(self, choices, **kwargs):
         """
@@ -603,7 +604,7 @@ class CustomCaptchaComplexField(BaseCustomField):
         # CaPTCHA
         parent_label = kwargs.get('label')
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
-        self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)]) # nosec
+        self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
 
         self.hidden_data = '{"created": "' + timezone.localtime().isoformat() + '", "text": "' + self.text + '"}'
 
