@@ -604,7 +604,7 @@ class CustomCaptchaComplexField(BaseCustomField):
         # CaPTCHA
         parent_label = kwargs.get('label')
         length = getattr(settings, 'CAPTCHA_LENGTH', 5)
-        self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)])
+        self.text = ''.join([random.choice(string.ascii_letters) for i in range(length)]) # nosec
 
         self.hidden_data = '{"created": "' + timezone.localtime().isoformat() + '", "text": "' + self.text + '"}'
 

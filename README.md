@@ -8,7 +8,7 @@ Django Form Builder
 
 A Django Framework application to build dynamic forms, with widgets and Django's standards, using JSON objects.
 
-Forms can be saved in a configurable storage (or settings.py). Users that requires high levels of customization will found what they're look for.
+Forms can be saved in a configurable storage (or settings.py). Users that requires high levels of customization will find what they're look for.
 
 Consult the [Official Documentation](https://django-form-builder.readthedocs.io/en/latest/index.html) at readthedocs for usage specifications and advanced topics.
 
@@ -21,12 +21,12 @@ _**Image 2**: Preview of the builded form_
 Features
 --------
 
-- Forms definitions via JSON object;
-- Save compiled form as JSON objects in model db and get its structure and contents with a simple model method call;
-- Override form constructor in order to add static common fields;
-- Create input fields using heritable classes, with customizable validation methods;
+- Forms definitions via JSON object
+- Save compiled form as JSON objects in model db and get its structure and contents with a simple model method call
+- Override form constructor in order to add static common fields
+- Create input fields using heritable classes, with customizable validation methods
 - Manage [Django Formset](https://docs.djangoproject.com/en/2.2/topics/forms/formsets/) fields, with form insertion and removal via javascript;
-- Manage and verify digitally signed file fields (PDF and P7M) without a certification authority validation (TODO via third-party API).
+- Manage and verify digitally signed file fields (PDF and P7M) without a certification authority validation (TODO via third-party API)
 - Audio and Image Captcha
 
 Examples
