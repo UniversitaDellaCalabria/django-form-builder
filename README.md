@@ -1,4 +1,4 @@
-![Build status](https://travis-ci.org/UniversitaDellaCalabria/django-form-builder.svg?branch=master)
+![CI build](https://github.com/UniversitaDellaCalabria/django-form-builder/workflows/django-form-builder/badge.svg)
 ![Python version](https://img.shields.io/badge/license-Apache%202-blue.svg)
 ![License](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-blue.svg)
 
