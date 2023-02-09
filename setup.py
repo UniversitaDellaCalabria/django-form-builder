@@ -14,15 +14,15 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='0.16.10',
+    version='0.16.11',
     packages=find_packages(),
     package_data={'': ['*.wav']},
     data_files=[
         ('', glob('django_form_builder/data/audio_captcha/*/default.wav', recursive=True)),
     ],
     include_package_data=True,
-    license='BSD License',
-    description="Django Form builder",
+    license='Apache 2.0',
+    description='Django Form builder',
     long_description=README,
     long_description_content_type='text/markdown',
     url='https://github.com/UniversitaDellaCalabria/django-form-builder',
@@ -40,6 +40,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     install_requires=[
+        'wheel',
         'django>=2.0,<4.0',
         'filesig>=0.3',
         'cryptography>=2.8',
