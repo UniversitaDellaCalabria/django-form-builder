@@ -346,6 +346,8 @@ class BaseDynamicForm(forms.Form):
                 for f_form in field.widget.formset.forms:
                     for f_field_name in f_form.fields:
                         f_field = f_form.fields[f_field_name]
+                        if not hasattr(f_field, 'raise_error'):
+                            continue
                         errors = f_field.raise_error(f_field_name,
                                                      f_form.cleaned_data.get(f_field_name),
                                                      **kwargs)
@@ -356,6 +358,9 @@ class BaseDynamicForm(forms.Form):
                         for error_field in f_form_errors:
                             if error_field in f_form.fields:
                                 self.add_error(fname, f_form_errors[error_field])
+
+            if not hasattr(field, 'raise_error'):
+                continue
 
             # other fields check
             # if field is a child of a complex field
@@ -373,7 +378,6 @@ class BaseDynamicForm(forms.Form):
             # if errors are present
             if errors:
                 self.add_error(fname, errors)
-                continue
 
     @staticmethod
     def build_constructor_dict(fields):
