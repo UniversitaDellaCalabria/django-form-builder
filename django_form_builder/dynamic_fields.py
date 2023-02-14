@@ -184,7 +184,7 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
     def clean(self, *args, **kwargs):
         try:
             args = args if isinstance(args[0], list) else ([args[0]],)
-            if args[0] == None: args = ([],)
+            if args[0] == [None]: args = ([],)
         except IndexError:
             args = ([],)
         return super().clean(*args, **kwargs)
