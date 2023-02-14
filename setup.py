@@ -14,7 +14,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='0.16.12',
+    version='0.16.13',
     packages=find_packages(),
     package_data={'': ['*.wav']},
     data_files=[

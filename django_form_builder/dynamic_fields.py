@@ -182,7 +182,11 @@ class CustomMultiChoiceField(MultipleChoiceField, BaseCustomField):
             self.choices += _split_choices(splitted_string[0])
 
     def clean(self, *args, **kwargs):
-        # args = args if isinstance(args[0], list) else ([args[0]],)
+        try:
+            args = args if isinstance(args[0], list) else ([args[0]],)
+            if args[0] == None: args = ([],)
+        except IndexError:
+            args = ([],)
         return super().clean(*args, **kwargs)
 
     def raise_error(self, name, cleaned_data, **kwargs):
