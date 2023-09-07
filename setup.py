@@ -14,7 +14,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='0.16.14',
+    version='0.17.0',
     packages=find_packages(),
     package_data={'': ['*.wav']},
     data_files=[
@@ -31,8 +31,8 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 2.0',
         'Framework :: Django :: 3.0',
+        'Framework :: Django :: 4.0',
         'Intended Audience :: Developers',
         "License :: OSI Approved :: Apache Software License",
         'Operating System :: OS Independent',
@@ -41,9 +41,9 @@ setup(
     ],
     install_requires=[
         'wheel',
-        'django>=2.0,<4.0',
+        'django>=3.0,<5.0',
         'filesig>=0.3',
         'cryptography>=2.8',
-        'captcha==0.3'
+        'captcha>=0.3'
     ],
 )
