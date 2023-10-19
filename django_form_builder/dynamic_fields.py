@@ -585,11 +585,19 @@ class CaptchaField(BaseCustomField):
     widget = CaptchaWidget
 
     def define_value(self, custom_value, **kwargs):
-        self.widget = CaptchaWidget(attrs={'value': custom_value,
-                                           'hidden_field': kwargs.get('hidden_field', ''),
-                                           'lang': kwargs.get('lang', getattr(settings,
-                                                                              'CAPTCHA_DEFAULT_LANG',
-                                                                              CAPTCHA_DEFAULT_LANG))})
+        self.widget = CaptchaWidget(
+            attrs={
+                'value': custom_value,
+                'hidden_field': kwargs.get('hidden_field', ''),
+                'lang': kwargs.get(
+                    'lang', getattr(
+                        settings,
+                       'CAPTCHA_DEFAULT_LANG',
+                        CAPTCHA_DEFAULT_LANG
+                    )
+                )
+            }
+        )
 
 
 class CustomCaptchaComplexField(BaseCustomField):
@@ -718,3 +726,20 @@ class CustomComplexTableField(ChoiceField, BaseCustomField):
         if custom_value:
             elements = _split_choices_in_list_canc(custom_value)
             self.choices = elements
+
+
+class CustomPasswordField(CharField, BaseCustomField):
+    """
+    PasswordField
+    """
+    field_type = _("Password")
+    widget = forms.PasswordInput
+    PASSWORD_SEC_REGEX = getattr(
+        settings, 
+        'PASSWORD_SEC_REGEX',
+        "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+    )  
+    
+    def raise_error(self, name, cleaned_data, **kwargs):
+        if not re.match(self.PASSWORD_SEC_REGEX, cleaned_data):
+            return ["Password is not secure enough, please add more entropy"]
