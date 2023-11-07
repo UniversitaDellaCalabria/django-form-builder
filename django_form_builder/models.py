@@ -1,4 +1,5 @@
 import json
+import sys
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -8,12 +9,17 @@ from . forms import BaseDynamicForm
 from . utils import get_as_dict
 
 
+_dynamic_fields = get_fields_types()
+if 'makemigrations' in sys.argv or 'migrate' in sys.argv: # pragma: no cover
+    _dynamic_fields = [('', '-')]
+
+
 class DynamicFieldMap(models.Model):
     """
     """
     name = models.CharField(max_length=150,)
     field_type = models.CharField(max_length=100,
-                                  choices = get_fields_types())
+                                  choices = _dynamic_fields)
     valore = models.TextField(max_length=20000,
                               blank=True,
                               default='',
