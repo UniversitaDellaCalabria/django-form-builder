@@ -348,7 +348,7 @@ class PositiveFloatField(DecimalField, BaseCustomField):
     def raise_error(self, name, cleaned_data, **kwargs):
         if not cleaned_data: return []
         # Only numbers (expressions like 16e50 aren't permitted)
-        if not re.match('^[0-9]+\.?[0-9]?$', str(cleaned_data)):
+        if not re.match('^[0-9]+(.([0-9]+))?$', str(cleaned_data)):
             return [_("Solo numeri ammessi"),]
 
 
@@ -735,11 +735,11 @@ class CustomPasswordField(CharField, BaseCustomField):
     field_type = _("Password")
     widget = forms.PasswordInput
     PASSWORD_SEC_REGEX = getattr(
-        settings, 
+        settings,
         'PASSWORD_SEC_REGEX',
         "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
-    )  
-    
+    )
+
     def raise_error(self, name, cleaned_data, **kwargs):
         if not re.match(self.PASSWORD_SEC_REGEX, cleaned_data):
             return ["Password is not secure enough, please add more entropy"]
