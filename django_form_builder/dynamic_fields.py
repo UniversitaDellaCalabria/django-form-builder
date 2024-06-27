@@ -139,7 +139,7 @@ class CustomIP4MaskedField(BaseCustomField):
         if not cleaned_data: return []
 
         # Only valid sequences
-        if not re.match('/^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:\/[0-2]\d|\/3[0-2])?$', str(cleaned_data)):
+        if not re.match('^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:\/[0-2]\d|\/3[0-2])?$', str(cleaned_data)):
             return [_("Formato non valido"),]
 
 
