@@ -131,6 +131,18 @@ class CustomIPField(GenericIPAddressField, BaseCustomField):
     """
     field_type = _("Indirizzo IP")
 
+
+class CustomIP4MaskedField(BaseCustomField):
+    field_type = _("Indirizzo IPv4 con subnet opzionale")
+
+    def raise_error(self, name, cleaned_data, **kwargs):
+        if not cleaned_data: return []
+
+        # Only valid sequences
+        if not re.match('/^([01]?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:[01]?\d\d?|2[0-4]\d|25[0-5])){3}(?:\/[0-2]\d|\/3[0-2])?$', str(cleaned_data)):
+            return [_("Formato non valido"),]
+
+
 class CustomMACField(CustomCharField, BaseCustomField):
     """
     GenericIPAddressField

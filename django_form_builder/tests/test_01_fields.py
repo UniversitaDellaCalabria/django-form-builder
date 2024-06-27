@@ -86,6 +86,13 @@ class TestInvalidFields(BaseTest):
         logger.info("Test valid CustomIPField")
         assert form.is_valid()
 
+    def test_ipv4_valid(self):
+        """
+        Test invalid values in CustomIP4MaskedField
+        """
+        form = self.single_field_form('CustomIP4MaskedField', '192.168.0.1/20')
+        logger.info("Test valid CustomIP4MaskedField")
+        assert form.is_valid()
 
     def test_ip_invalid(self):
         """
