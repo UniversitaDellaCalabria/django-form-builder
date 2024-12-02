@@ -41,7 +41,7 @@ setup(
     ],
     install_requires=[
         'wheel',
-        'django>=3.0,<5.0',
+        'django>=3.0,<6.0',
         'filesig>=0.3',
         'cryptography>=2.8',
         'captcha>=0.3'
