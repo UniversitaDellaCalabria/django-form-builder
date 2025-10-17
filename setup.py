@@ -14,7 +14,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-form-builder',
-    version='1.2.1',
+    version='1.2.2',
     packages=find_packages(),
     package_data={'': ['*.wav']},
     data_files=[
@@ -33,6 +33,7 @@ setup(
         'Framework :: Django',
         'Framework :: Django :: 3.0',
         'Framework :: Django :: 4.0',
+        'Framework :: Django :: 5.0',
         'Intended Audience :: Developers',
         "License :: OSI Approved :: Apache Software License",
         'Operating System :: OS Independent',
