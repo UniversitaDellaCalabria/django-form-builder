@@ -1,5 +1,5 @@
 django>=3.0,<6.0
 filesig>=0.3
 captcha>=0.3
-cryptography>=2.8
+cryptography>=46.0.5
 pillow>=10.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
