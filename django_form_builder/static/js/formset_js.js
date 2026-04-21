@@ -95,7 +95,7 @@ $(document).on('click', '.remove-form-row', function(e){
     // get the CSS class of element that contains form and button
     var container_class = '.form-container';
     // get formset prefix
-    var prefix = $(this).attr('id').split(/-[0-9+]/)[0]
+    var prefix = $(this).attr('id').split(/-[0-9+]/)[0].split(/remove-(.+)/)[1]
     // get the element to remove (contains the form and the "remove" button)
     var to_remove = $(this).closest(container_class);
     // call deleteForm method

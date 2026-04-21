@@ -8,7 +8,7 @@
                 <table style="width:100%">
                     {{ formset_template }}
                 </table>
-                <button class="remove-form-row" id="remove-{{ formset_id }}-0">
+                <button class="remove-form-row" id="remove-{{ formset_id }}-{{ template_generic_id }}">
                     {% trans "Rimuovi inserimento" %}
                 </button>
             </div>
@@ -25,7 +25,7 @@
         </table>
     </div>
     {% if not readonly %}
-        <button class="remove-form-row" id="remove-{{ formset_id }}-0">
+        <button class="remove-form-row" id="remove-{{ formset_id }}-{{ forloop.counter0 }}">
             {% trans "Rimuovi inserimento" %}
         </button>
     {% endif %}
