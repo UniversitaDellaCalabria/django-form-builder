@@ -510,7 +510,7 @@ class ProtocolloField(BaseCustomField):
     """
     Protocolo type, number and date (or another classification type)
     """
-    field_type = "Protocollo (tipo/numero/data)"
+    field_type = _("Protocollo (tipo/numero/data)")
     is_complex = True
 
     def __init__(self, *args, **data_kwargs):
